@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login | Frost Haven</title>
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+    <header>
+        <h2>🍦 Frost Haven</h2>
+        <nav>
+            <a href="../index.html">Customer Website</a>
+            <a href="login.html">Admin Login</a>
+        </nav>
+    </header>
+
+    <main class="auth-page">
+        <section class="auth-card admin-auth-card">
+            <div class="auth-icon">🔐</div>
+
+            <h1>Admin Login</h1>
+            <p>Sign in to manage Frost Haven.</p>
+
+            <form id="admin-login-form">
+                <label for="admin-email">Admin Username or Email</label>
+                <input
+                    type="text"
+                    id="admin-email"
+                    name="username"
+                    placeholder="Enter admin username or email"
+                    autocomplete="username"
+                    required
+                >
+
+                <label for="admin-password">Password</label>
+                <input
+                    type="password"
+                    id="admin-password"
+                    name="password"
+                    placeholder="Enter admin password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <button type="submit" class="primary-button">
+                    Admin Login
+                </button>
+            </form>
+
+            <p id="admin-login-message" role="status" aria-live="polite"></p>
+
+            <p class="auth-link">
+                <a href="../index.html">← Back to Customer Website</a>
+            </p>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Frost Haven. All rights reserved.</p>
+        <p>Admin Panel</p>
+    </footer>
+
+    <script>
+        "use strict";
+
+        const adminForm = document.getElementById("admin-login-form");
+        const adminMessage = document.getElementById("admin-login-message");
+        const loginButton = adminForm.querySelector('button[type="submit"]');
+
+        adminForm.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const username =
+                document.getElementById("admin-email").value.trim();
+
+            const password =
+                document.getElementById("admin-password").value;
+
+            adminMessage.textContent = "Checking credentials...";
+            loginButton.disabled = true;
+
+            try {
+                const response = await fetch("/api/admin/login", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        username: username,
+                        password: password
+                    })
+                });
+
+                const result = await response.json().catch(() => ({}));
+
+                if (!response.ok) {
+                    adminMessage.textContent =
+                        result.error ||
+                        result.message ||
+                        "Login failed. Check your username and password.";
+                    return;
+                }
+
+                if (!result.id) {
+                    adminMessage.textContent =
+                        "Login response was unexpected. Please check the backend.";
+                    console.error("Unexpected admin login response:", result);
+                    return;
+                }
+
+                sessionStorage.setItem(
+                    "frostHavenAdmin",
+                    JSON.stringify({
+                        id: result.id,
+                        username: result.username || username
+                    })
+                );
+
+                adminMessage.textContent = "Login successful!";
+
+                window.location.href = "/admin/dashboard.html";
+
+            } catch (error) {
+                console.error("Admin login error:", error);
+                adminMessage.textContent =
+                    "Cannot connect to the server. Make sure Spring Boot is running.";
+            } finally {
+                loginButton.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>

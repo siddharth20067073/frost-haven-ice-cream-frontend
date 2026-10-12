@@ -1,0 +1,289 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register | Frost Haven</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+    <style>
+        .register-hero {
+            padding: 45px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #fff0f5, #fffaf4);
+        }
+
+        .register-card {
+            width: 100%;
+            max-width: 510px;
+            padding: 36px;
+            box-sizing: border-box;
+            background: #fff;
+            border: 1px solid #f0d5e1;
+            border-radius: 22px;
+            box-shadow: 0 12px 35px rgba(80, 30, 50, 0.10);
+        }
+
+        .register-icon {
+            width: 74px;
+            height: 74px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff0f5;
+            border-radius: 50%;
+            font-size: 35px;
+        }
+
+        .register-card h1 {
+            margin: 0 0 10px;
+            color: #a3154b;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .register-subtitle {
+            margin: 0 0 26px;
+            color: #806d77;
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        .register-card form {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .register-card form > label {
+            margin-top: 8px;
+            color: #38222d;
+            font-weight: 600;
+        }
+
+        .register-card input[type="text"],
+        .register-card input[type="email"],
+        .register-card input[type="tel"],
+        .register-card input[type="password"],
+        .register-card textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 14px;
+            border: 1px solid #e7ccd8;
+            border-radius: 10px;
+            background: #fffafc;
+            color: #38222d;
+            font: inherit;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .register-card textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .register-card input:focus,
+        .register-card textarea:focus {
+            border-color: #a3154b;
+            box-shadow: 0 0 0 3px rgba(163, 21, 75, 0.10);
+        }
+
+        .register-card input::placeholder,
+        .register-card textarea::placeholder {
+            color: #a8959e;
+        }
+
+        .register-submit {
+            width: 100%;
+            margin-top: 17px;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            background: #a3154b;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .register-submit:hover {
+            background: #80103a;
+            transform: translateY(-1px);
+        }
+
+        #register-message {
+            margin: 14px 0 0;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .register-login {
+            margin: 23px 0 0;
+            padding-top: 20px;
+            border-top: 1px solid #f0d5e1;
+            color: #806d77;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .register-login a {
+            color: #a3154b;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .register-login a:hover {
+            text-decoration: underline;
+        }
+
+        .register-footer {
+            padding: 22px 15px;
+            background: #fffaf4;
+            border-top: 1px solid #f0d5e1;
+            color: #806d77;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .register-footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 520px) {
+            .register-hero {
+                padding: 28px 14px;
+            }
+
+            .register-card {
+                padding: 27px 20px;
+            }
+
+            .register-card h1 {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="/" class="brand" style="text-decoration: none;">
+                🍦 Frost Haven
+            </a>
+
+            <nav>
+                <a href="/">Home</a>
+                <a href="/pages/products.html">Ice Creams</a>
+                <a href="/pages/about.html">About</a>
+                <a href="/pages/login.html">Login</a>
+                <a href="/pages/register.html" class="active">Register</a>
+                <a href="/pages/cart.html">🛒 Cart</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="register-hero">
+        <section class="register-card">
+
+            <div class="register-icon">👤</div>
+
+            <h1>Create Your Account</h1>
+
+            <p class="register-subtitle">
+                Join Frost Haven and make every scoop special.
+                Create an account to get started.
+            </p>
+
+            <form id="register-form">
+
+                <label for="register-name">Full Name</label>
+                <input
+                    type="text"
+                    id="register-name"
+                    name="name"
+                    placeholder="Enter your full name"
+                    autocomplete="name"
+                    required
+                >
+
+                <label for="register-email">Email Address</label>
+                <input
+                    type="email"
+                    id="register-email"
+                    name="email"
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                    required
+                >
+
+                <label for="register-phone">Phone Number</label>
+                <input
+                    type="tel"
+                    id="register-phone"
+                    name="phone"
+                    placeholder="Enter your 10-digit phone number"
+                    pattern="[0-9]{10}"
+                    maxlength="10"
+                    minlength="10"
+                    inputmode="numeric"
+                    autocomplete="tel"
+                    required
+                >
+
+                <label for="register-password">Password</label>
+                <input
+                    type="password"
+                    id="register-password"
+                    name="password"
+                    placeholder="Create a password"
+                    autocomplete="new-password"
+                    required
+                >
+
+                <label for="register-address">Address</label>
+                <textarea
+                    id="register-address"
+                    name="address"
+                    placeholder="Enter your delivery address"
+                    rows="4"
+                    autocomplete="street-address"
+                    required
+                ></textarea>
+
+                <button type="submit" class="register-submit">
+                    Create Account
+                </button>
+
+            </form>
+
+            <p id="register-message" role="status" aria-live="polite"></p>
+
+            <p class="register-login">
+                Already have an account?
+                <a href="/pages/login.html">Login here</a>
+            </p>
+
+        </section>
+    </main>
+
+    <footer class="register-footer">
+        <p>© 2026 Frost Haven. All rights reserved.</p>
+        <p>Made with ❤️ for ice cream lovers.</p>
+    </footer>
+
+    <script src="/script.js"></script>
+
+</body>
+</html>

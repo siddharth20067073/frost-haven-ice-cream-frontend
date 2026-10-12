@@ -1,0 +1,675 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Checkout | Frost Haven</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+    <style>
+        .checkout-hero {
+            padding: 42px 20px 30px;
+            text-align: center;
+            background: linear-gradient(135deg, #fff0f5, #fffaf4);
+        }
+
+        .checkout-hero .hero-icon {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .checkout-hero h1 {
+            margin: 0 0 10px;
+            color: #a3154b;
+            font-size: clamp(28px, 4vw, 40px);
+        }
+
+        .checkout-hero p {
+            margin: 0;
+            color: #806d77;
+            line-height: 1.7;
+        }
+
+        .checkout-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 35px 22px 55px;
+        }
+
+        .checkout-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.4fr) minmax(280px, 1fr);
+            gap: 28px;
+            align-items: start;
+        }
+
+        .checkout-form-card,
+        .checkout-summary {
+            min-width: 0;
+            box-sizing: border-box;
+            padding: 28px;
+            background: #fff;
+            border: 1px solid #f0d5e1;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(80, 30, 50, 0.06);
+        }
+
+        .checkout-form-card h2,
+        .checkout-summary h2 {
+            margin: 0 0 24px;
+            color: #a3154b;
+            font-size: 23px;
+        }
+
+        .checkout-form-card form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .checkout-form-card form > label {
+            margin-top: 9px;
+            color: #38222d;
+            font-weight: 600;
+        }
+
+        .checkout-form-card input,
+        .checkout-form-card textarea,
+        .checkout-form-card select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 14px;
+            border: 1px solid #e7ccd8;
+            border-radius: 10px;
+            background: #fffafc;
+            color: #38222d;
+            font: inherit;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .checkout-form-card textarea {
+            min-height: 110px;
+            resize: vertical;
+        }
+
+        .checkout-form-card input:focus,
+        .checkout-form-card textarea:focus,
+        .checkout-form-card select:focus {
+            border-color: #a3154b;
+            box-shadow: 0 0 0 3px rgba(163, 21, 75, 0.10);
+        }
+
+        .checkout-form-card input::placeholder,
+        .checkout-form-card textarea::placeholder {
+            color: #a8959e;
+        }
+
+        .checkout-button {
+            width: 100%;
+            margin-top: 16px;
+            padding: 14px 18px;
+            border: none;
+            border-radius: 30px;
+            background: #a3154b;
+            color: #fff;
+            font: inherit;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .checkout-button:hover:not(:disabled) {
+            background: #80103a;
+            transform: translateY(-1px);
+        }
+
+        .checkout-button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        #checkout-message {
+            margin: 12px 0 0;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .checkout-summary {
+            position: sticky;
+            top: 20px;
+        }
+
+        #checkout-items {
+            margin-bottom: 18px;
+        }
+
+        .checkout-item {
+            display: flex;
+            justify-content: space-between;
+            gap: 14px;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5e5ec;
+            color: #806d77;
+            line-height: 1.5;
+        }
+
+        .checkout-item span:first-child {
+            min-width: 0;
+            overflow-wrap: anywhere;
+        }
+
+        .checkout-item span:last-child {
+            flex-shrink: 0;
+            color: #38222d;
+            font-weight: 600;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 13px 0;
+            border-bottom: 1px solid #f5e5ec;
+            color: #806d77;
+        }
+
+        .summary-row span:last-child {
+            color: #38222d;
+            font-weight: 600;
+        }
+
+        .summary-row.cart-total {
+            margin-top: 5px;
+            padding: 18px 0;
+            border-bottom: none;
+            color: #a3154b;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .summary-row.cart-total span:last-child {
+            color: #a3154b;
+            font-size: 21px;
+        }
+
+        .continue-shopping {
+            display: flex;
+            justify-content: center;
+            margin-top: 12px;
+            padding: 13px 18px;
+            border: 1px solid #e7ccd8;
+            border-radius: 30px;
+            color: #a3154b;
+            text-align: center;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .continue-shopping:hover {
+            background: #fff0f5;
+        }
+
+        .checkout-note {
+            margin: 18px 0 0;
+            color: #806d77;
+            font-size: 13px;
+            line-height: 1.7;
+            text-align: center;
+        }
+
+        .checkout-footer {
+            padding: 22px 15px;
+            background: #fffaf4;
+            border-top: 1px solid #f0d5e1;
+            color: #806d77;
+            line-height: 1.8;
+            text-align: center;
+        }
+
+        .checkout-footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 800px) {
+            .checkout-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .checkout-summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .checkout-hero {
+                padding: 32px 15px 24px;
+            }
+
+            .checkout-content {
+                padding: 25px 14px 40px;
+            }
+
+            .checkout-form-card,
+            .checkout-summary {
+                padding: 21px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="nav-container">
+
+            <a href="/" class="brand" style="text-decoration: none;">
+                🍦 Frost Haven
+            </a>
+
+            <nav>
+                <a href="/">Home</a>
+                <a href="/pages/products.html">Ice Creams</a>
+                <a href="/pages/about.html">About</a>
+                <a href="/pages/my-orders.html">My Orders</a>
+                <a href="/pages/cart.html">
+                    🛒 Cart <span class="cart-count">0</span>
+                </a>
+                <a href="#" id="logout-button">Logout</a>
+            </nav>
+
+        </div>
+    </header>
+
+    <section class="checkout-hero">
+        <div class="hero-icon">🧾</div>
+
+        <h1>Secure Checkout</h1>
+
+        <p>
+            You're one step away from enjoying your favorite ice creams.
+        </p>
+    </section>
+
+    <main class="checkout-content">
+
+        <div class="checkout-layout">
+
+            <section class="checkout-form-card">
+
+                <h2>Delivery Details</h2>
+
+                <form id="checkout-form">
+
+                    <label for="fullName">Full Name</label>
+                    <input
+                        id="fullName"
+                        name="fullName"
+                        type="text"
+                        required
+                        maxlength="100"
+                        autocomplete="name"
+                        placeholder="Enter your full name"
+                    >
+
+                    <label for="email">Email Address</label>
+                    <input
+                        id="email"
+                        name="email"
+                        type="email"
+                        required
+                        maxlength="150"
+                        autocomplete="email"
+                        placeholder="Enter your email"
+                    >
+
+                    <label for="phone">Phone Number</label>
+                    <input
+                        id="phone"
+                        name="phone"
+                        type="tel"
+                        pattern="[0-9]{10}"
+                        maxlength="10"
+                        minlength="10"
+                        inputmode="numeric"
+                        autocomplete="tel"
+                        required
+                        placeholder="10-digit phone number"
+                    >
+
+                    <label for="address">Delivery Address</label>
+                    <textarea
+                        id="address"
+                        name="address"
+                        rows="4"
+                        required
+                        maxlength="500"
+                        autocomplete="street-address"
+                        placeholder="Enter your complete delivery address"
+                    ></textarea>
+
+                    <label for="paymentMethod">Payment Method</label>
+                    <select
+                        id="paymentMethod"
+                        name="paymentMethod"
+                        required
+                    >
+                        <option value="">Select Payment Method</option>
+                        <option value="COD">Cash on Delivery</option>
+                        <option value="UPI">UPI (demo only)</option>
+                    </select>
+
+                    <p
+                        id="checkout-message"
+                        role="status"
+                        aria-live="polite"
+                    ></p>
+
+                    <button
+                        type="submit"
+                        id="place-order-btn"
+                        class="checkout-button"
+                    >
+                        Place Order
+                    </button>
+
+                </form>
+
+            </section>
+
+            <aside class="checkout-summary">
+
+                <h2>Order Summary</h2>
+
+                <div id="checkout-items">
+                    <p>Loading cart...</p>
+                </div>
+
+                <p class="summary-row">
+                    <span>Items</span>
+                    <span id="checkout-count">0</span>
+                </p>
+
+                <p class="summary-row">
+                    <span>Subtotal</span>
+                    <span>₹<span id="checkout-subtotal">0.00</span></span>
+                </p>
+
+                <p class="summary-row">
+                    <span>Delivery</span>
+                    <span>Free</span>
+                </p>
+
+                <p class="summary-row cart-total">
+                    <span>Total</span>
+                    <span>₹<span id="checkout-total">0.00</span></span>
+                </p>
+
+                <a href="/pages/cart.html" class="continue-shopping">
+                    ← Back to Cart
+                </a>
+
+                <p class="checkout-note">
+                    ❤️ Thank you for choosing Frost Haven!
+                    Your cart is cleared only after the server confirms
+                    that your order was placed successfully.
+                </p>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <footer class="checkout-footer">
+        <p>© 2026 Frost Haven. All rights reserved.</p>
+        <p>Made with ❤️ for ice cream lovers.</p>
+    </footer>
+
+    <script>
+        "use strict";
+
+        const CART_KEY = "frostHavenCart";
+
+        function readCart() {
+            try {
+                const cart = JSON.parse(
+                    localStorage.getItem(CART_KEY) || "[]"
+                );
+
+                return Array.isArray(cart) ? cart : [];
+            } catch (error) {
+                return [];
+            }
+        }
+
+        function updateCartCount() {
+            const cart = readCart();
+
+            const count = cart.reduce((total, item) => {
+                return total + Math.max(0, Number(item.quantity) || 0);
+            }, 0);
+
+            document.querySelectorAll(
+                ".cart-count, #cart-count, [data-cart-count]"
+            ).forEach(element => {
+                element.textContent = count;
+            });
+        }
+
+        function showMessage(message, isError = true) {
+            const element = document.getElementById("checkout-message");
+
+            element.textContent = message;
+            element.style.color = isError ? "#b00020" : "#167447";
+        }
+
+        function renderCheckoutSummary() {
+            const cart = readCart();
+
+            const itemsContainer =
+                document.getElementById("checkout-items");
+
+            const button =
+                document.getElementById("place-order-btn");
+
+            let subtotal = 0;
+            let count = 0;
+
+            itemsContainer.innerHTML = "";
+
+            if (cart.length === 0) {
+                itemsContainer.textContent = "Your cart is empty.";
+                button.disabled = true;
+            } else {
+                button.disabled = false;
+
+                cart.forEach(item => {
+                    const quantity = Number(item.quantity);
+                    const price = Number(item.price);
+
+                    if (
+                        !Number.isFinite(quantity) ||
+                        !Number.isFinite(price) ||
+                        quantity < 1 ||
+                        price < 0
+                    ) {
+                        return;
+                    }
+
+                    subtotal += price * quantity;
+                    count += quantity;
+
+                    const row = document.createElement("div");
+                    row.className = "checkout-item";
+
+                    const name = document.createElement("span");
+                    name.textContent =
+                        `${item.productName || "Ice Cream"} × ${quantity}`;
+
+                    const amount = document.createElement("span");
+                    amount.textContent =
+                        `₹${(price * quantity).toFixed(2)}`;
+
+                    row.append(name, amount);
+                    itemsContainer.appendChild(row);
+                });
+
+                if (itemsContainer.children.length === 0) {
+                    itemsContainer.textContent = "No valid items in cart.";
+                    button.disabled = true;
+                }
+            }
+
+            document.getElementById("checkout-count").textContent = count;
+
+            document.getElementById("checkout-subtotal").textContent =
+                subtotal.toFixed(2);
+
+            document.getElementById("checkout-total").textContent =
+                subtotal.toFixed(2);
+        }
+
+        document.getElementById("checkout-form")
+            .addEventListener("submit", async event => {
+
+                event.preventDefault();
+
+                const cart = readCart();
+
+                if (cart.length === 0) {
+                    showMessage(
+                        "Your cart is empty. Add a product before ordering."
+                    );
+                    return;
+                }
+
+                const form = event.currentTarget;
+
+                if (!form.reportValidity()) {
+                    return;
+                }
+
+                const button = document.getElementById("place-order-btn");
+
+                button.disabled = true;
+                button.textContent = "Placing Order...";
+                showMessage("", false);
+
+                const checkoutRequest = {
+                    customerName:
+                        document.getElementById("fullName").value.trim(),
+
+                    email:
+                        document.getElementById("email").value.trim(),
+
+                    phone:
+                        document.getElementById("phone").value.trim(),
+
+                    deliveryAddress:
+                        document.getElementById("address").value.trim(),
+
+                    paymentMethod:
+                        document.getElementById("paymentMethod").value,
+
+                    items: cart.map(item => ({
+                        productId: Number(item.id),
+                        quantity: Number(item.quantity)
+                    }))
+                };
+
+                try {
+                    const response = await fetch("/api/orders", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(checkoutRequest)
+                    });
+
+                    const responseText = await response.text();
+
+                    let result = {};
+
+                    try {
+                        result = responseText
+                            ? JSON.parse(responseText)
+                            : {};
+                    } catch (error) {
+                        result = { message: responseText };
+                    }
+
+                    if (!response.ok) {
+                        throw new Error(
+                            result.error ||
+                            result.message ||
+                            `Order request failed (${response.status}).`
+                        );
+                    }
+
+                    // Clear the cart only after the server confirms success.
+                    localStorage.removeItem(CART_KEY);
+                    updateCartCount();
+
+                    sessionStorage.setItem(
+                        "frostHavenLastOrder",
+                        JSON.stringify({
+                            customerName: checkoutRequest.customerName,
+                            email: checkoutRequest.email,
+                            total: Number(
+                                document.getElementById(
+                                    "checkout-total"
+                                ).textContent
+                            ),
+                            order: result
+                        })
+                    );
+
+                    window.location.href = "/pages/order-success.html";
+
+                } catch (error) {
+                    console.error("Order submission failed:", error);
+
+                    showMessage(
+                        "Order could not be placed: " + error.message
+                    );
+
+                    button.disabled = false;
+                    button.textContent = "Place Order";
+                }
+            });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            renderCheckoutSummary();
+            updateCartCount();
+
+            const logoutButton =
+                document.getElementById("logout-button");
+
+            if (logoutButton) {
+                logoutButton.addEventListener("click", event => {
+                    event.preventDefault();
+
+                    if (confirm("Are you sure you want to logout?")) {
+                        localStorage.removeItem("frostHavenUser");
+                        localStorage.removeItem("frostHavenReturnTo");
+
+                        window.location.href = "/pages/login.html";
+                    }
+                });
+            }
+        });
+
+        window.addEventListener("storage", () => {
+            renderCheckoutSummary();
+            updateCartCount();
+        });
+    </script>
+
+</body>
+</html>

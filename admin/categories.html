@@ -1,0 +1,757 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Categories | Frost Haven</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        :root {
+            --cream: #fff9f3;
+            --white: #ffffff;
+            --chocolate: #4b2924;
+            --muted: #8b7771;
+            --berry: #b52d60;
+            --berry-light: #fff0f5;
+            --border: #f3dce3;
+            --shadow: 0 8px 25px rgba(75, 41, 36, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--cream);
+            color: var(--chocolate);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .admin-navbar {
+            min-height: 90px;
+            padding: 20px 4.5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-brand {
+            margin: 0;
+            color: var(--berry);
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .admin-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .admin-nav-links a {
+            color: var(--chocolate);
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .admin-nav-links a:hover,
+        .admin-nav-links a.active {
+            color: var(--berry);
+        }
+
+        .page-container {
+            width: min(1240px, 92%);
+            margin: 38px auto 60px;
+        }
+
+        .page-heading {
+            margin-bottom: 30px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 12px;
+            font-size: 34px;
+            color: #34221f;
+        }
+
+        .page-heading p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .panel {
+            margin-bottom: 26px;
+            padding: 26px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .panel-heading h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 14px;
+            color: var(--chocolate);
+            background: #fffdfc;
+            border: 1px solid #edcfd9;
+            border-radius: 11px;
+            outline: none;
+            font: inherit;
+        }
+
+        input {
+            min-height: 50px;
+        }
+
+        textarea {
+            min-height: 115px;
+            resize: vertical;
+        }
+
+        input:focus,
+        textarea:focus {
+            border-color: var(--berry);
+            box-shadow: 0 0 0 3px rgba(181, 45, 96, 0.09);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+
+        .primary-button,
+        .secondary-button,
+        .action-button {
+            padding: 12px 17px;
+            border: 1px solid #f1cad8;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .primary-button {
+            background: var(--berry);
+            color: var(--white);
+            border-color: var(--berry);
+        }
+
+        .primary-button:hover {
+            background: #94224d;
+        }
+
+        .secondary-button,
+        .action-button {
+            background: var(--berry-light);
+            color: var(--berry);
+        }
+
+        .secondary-button:hover,
+        .action-button:hover {
+            background: var(--berry);
+            color: var(--white);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #category-message {
+            margin: 18px 0 0;
+            color: var(--berry);
+            line-height: 1.5;
+            overflow-wrap: anywhere;
+        }
+
+        .search-input {
+            width: 100%;
+            margin-bottom: 24px;
+        }
+
+        .count-badge {
+            display: inline-block;
+            padding: 11px 17px;
+            background: var(--berry-light);
+            color: var(--berry);
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .category-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .category-table thead {
+            background: var(--berry-light);
+        }
+
+        .category-table th {
+            padding: 19px 14px;
+            color: #71314b;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .category-table td {
+            padding: 19px 14px;
+            border-bottom: 1px solid #f4e5e9;
+            font-size: 15px;
+        }
+
+        .category-table tbody tr:hover {
+            background: #fffafc;
+        }
+
+        .category-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .category-name {
+            font-weight: 700;
+        }
+
+        .description-cell {
+            max-width: 380px;
+            white-space: normal !important;
+            line-height: 1.6;
+            overflow-wrap: anywhere;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .delete-button {
+            color: #b42335;
+            background: #fff0f0;
+            border-color: #f5cccc;
+        }
+
+        .delete-button:hover {
+            background: #b42335;
+            color: white;
+        }
+
+        .message-row {
+            padding: 30px !important;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .admin-footer {
+            padding: 25px 15px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 850px) {
+            .admin-navbar {
+                align-items: flex-start;
+            }
+
+            .admin-nav-links {
+                gap: 17px;
+            }
+
+            .page-heading h1 {
+                font-size: 29px;
+            }
+
+            .panel {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .admin-navbar {
+                padding: 20px;
+            }
+
+            .admin-brand {
+                font-size: 24px;
+            }
+
+            .admin-nav-links {
+                gap: 14px;
+            }
+
+            .admin-nav-links a {
+                font-size: 13px;
+            }
+
+            .page-container {
+                width: 94%;
+                margin-top: 26px;
+            }
+
+            .page-heading h1 {
+                font-size: 26px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-group.full-width {
+                grid-column: auto;
+            }
+
+            .panel-heading h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="admin-navbar">
+    <h2 class="admin-brand">🍦 Frost Haven Admin</h2>
+
+    <nav class="admin-nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="products.html">Products</a>
+        <a href="orders.html">Orders</a>
+        <a href="users.html">Users</a>
+        <a href="categories.html" class="active">Categories</a>
+        <a href="../index.html">Logout</a>
+    </nav>
+</header>
+
+<main class="page-container">
+
+    <section class="page-heading">
+        <h1>Manage Categories</h1>
+        <p>Add, update, search, and manage your ice cream categories.</p>
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <h2 id="category-form-title">Add New Category</h2>
+        </div>
+
+        <form id="category-form">
+            <input type="hidden" id="category-id">
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="category-name">Category Name</label>
+                    <input
+                        type="text"
+                        id="category-name"
+                        placeholder="Enter category name"
+                        maxlength="100"
+                        required
+                    >
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="category-description">Description</label>
+                    <textarea
+                        id="category-description"
+                        placeholder="Description is optional"
+                        maxlength="1000"
+                    ></textarea>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <button
+                    type="submit"
+                    class="primary-button"
+                    id="save-category"
+                >
+                    Add Category
+                </button>
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    id="cancel-category-edit"
+                    hidden
+                >
+                    Cancel Edit
+                </button>
+            </div>
+
+            <p id="category-message" role="status" aria-live="polite"></p>
+        </form>
+    </section>
+
+    <section class="panel">
+        <div class="panel-heading">
+            <h2>All Categories</h2>
+            <span class="count-badge" id="admin-category-count">
+                Loading...
+            </span>
+        </div>
+
+        <input
+            type="search"
+            id="category-search"
+            class="search-input"
+            placeholder="Search categories..."
+            aria-label="Search categories"
+        >
+
+        <div class="table-wrapper">
+            <table class="category-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Category Name</th>
+                        <th>Description</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody id="admin-category-list">
+                    <tr>
+                        <td colspan="4" class="message-row">
+                            Loading categories...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
+
+<footer class="admin-footer">
+    © 2026 Frost Haven. All rights reserved.
+</footer>
+
+<script>
+"use strict";
+
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("category-form");
+    const idField = document.getElementById("category-id");
+    const nameField = document.getElementById("category-name");
+    const descriptionField = document.getElementById("category-description");
+    const searchField = document.getElementById("category-search");
+    const list = document.getElementById("admin-category-list");
+    const count = document.getElementById("admin-category-count");
+    const message = document.getElementById("category-message");
+    const saveButton = document.getElementById("save-category");
+    const cancelButton = document.getElementById("cancel-category-edit");
+    const formTitle = document.getElementById("category-form-title");
+
+    let categories = [];
+
+    function showTableMessage(value) {
+        list.replaceChildren();
+
+        const row = document.createElement("tr");
+        const cell = document.createElement("td");
+
+        cell.colSpan = 4;
+        cell.className = "message-row";
+        cell.textContent = value;
+
+        row.appendChild(cell);
+        list.appendChild(row);
+    }
+
+    function makeCell(value, className = "") {
+        const cell = document.createElement("td");
+        cell.textContent = value || "No description";
+
+        if (className) {
+            cell.className = className;
+        }
+
+        return cell;
+    }
+
+    async function getError(response) {
+        const body = await response.text();
+
+        if (!body) {
+            return "HTTP " + response.status;
+        }
+
+        try {
+            const data = JSON.parse(body);
+            return data.message || data.error || body;
+        } catch {
+            return body;
+        }
+    }
+
+    function renderCategories() {
+        const query = searchField.value.trim().toLowerCase();
+
+        const filtered = categories.filter(category => {
+            const name = String(category.categoryName || "").toLowerCase();
+            const id = String(category.id ?? "").toLowerCase();
+
+            return name.includes(query) || id.includes(query);
+        });
+
+        count.textContent =
+            `${filtered.length} of ${categories.length} Categories`;
+
+        list.replaceChildren();
+
+        if (filtered.length === 0) {
+            showTableMessage(
+                categories.length
+                    ? "No categories match your search."
+                    : "No categories found."
+            );
+            return;
+        }
+
+        filtered.forEach(category => {
+            const row = document.createElement("tr");
+
+            row.appendChild(makeCell(category.id));
+            row.appendChild(
+                makeCell(category.categoryName, "category-name")
+            );
+            row.appendChild(
+                makeCell(category.description || "No description", "description-cell")
+            );
+
+            const actionsCell = document.createElement("td");
+            const actions = document.createElement("div");
+            actions.className = "action-buttons";
+
+            const editButton = document.createElement("button");
+            editButton.type = "button";
+            editButton.className = "action-button";
+            editButton.textContent = "Edit";
+
+            editButton.addEventListener("click", () => {
+                idField.value = category.id;
+                nameField.value = category.categoryName || "";
+                descriptionField.value = category.description || "";
+
+                formTitle.textContent = "Edit Category #" + category.id;
+                saveButton.textContent = "Save Changes";
+                cancelButton.hidden = false;
+                message.textContent = "Editing category.";
+
+                window.scrollTo({ top: 0, behavior: "smooth" });
+                nameField.focus();
+            });
+
+            const deleteButton = document.createElement("button");
+            deleteButton.type = "button";
+            deleteButton.className = "action-button delete-button";
+            deleteButton.textContent = "Delete";
+
+            deleteButton.addEventListener("click", async () => {
+                if (!confirm(
+                    `Delete category "${category.categoryName}"?`
+                )) {
+                    return;
+                }
+
+                try {
+                    message.textContent = "Deleting category...";
+
+                    const response = await fetch(
+                        "/api/categories/" + encodeURIComponent(category.id),
+                        { method: "DELETE" }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error(await getError(response));
+                    }
+
+                    message.textContent = "Category deleted successfully.";
+                    await loadCategories();
+
+                } catch (error) {
+                    console.error("Delete category error:", error);
+                    message.textContent =
+                        "Could not delete category: " + error.message;
+                }
+            });
+
+            actions.appendChild(editButton);
+            actions.appendChild(deleteButton);
+            actionsCell.appendChild(actions);
+            row.appendChild(actionsCell);
+            list.appendChild(row);
+        });
+    }
+
+    async function loadCategories() {
+        count.textContent = "Loading...";
+        showTableMessage("Loading categories...");
+
+        try {
+            const response = await fetch("/api/categories", {
+                headers: { "Accept": "application/json" },
+                cache: "no-store"
+            });
+
+            if (!response.ok) {
+                throw new Error(await getError(response));
+            }
+
+            const data = await response.json();
+
+            if (!Array.isArray(data)) {
+                throw new Error("Invalid category list received from server.");
+            }
+
+            categories = data;
+            renderCategories();
+
+        } catch (error) {
+            console.error("Load categories error:", error);
+            count.textContent = "Unavailable";
+            showTableMessage("Could not load categories: " + error.message);
+        }
+    }
+
+    function resetForm() {
+        form.reset();
+        idField.value = "";
+        formTitle.textContent = "Add New Category";
+        saveButton.textContent = "Add Category";
+        cancelButton.hidden = true;
+    }
+
+    form.addEventListener("submit", async event => {
+        event.preventDefault();
+
+        const id = idField.value;
+        const categoryName = nameField.value.trim();
+
+        if (!categoryName) {
+            message.textContent = "Please enter a category name.";
+            return;
+        }
+
+        const duplicate = categories.some(category =>
+            String(category.categoryName || "").trim().toLowerCase()
+                === categoryName.toLowerCase()
+            && String(category.id) !== String(id)
+        );
+
+        if (duplicate) {
+            message.textContent = "This category already exists.";
+            return;
+        }
+
+        saveButton.disabled = true;
+        message.textContent = "Saving category...";
+
+        try {
+            const response = await fetch(
+                id
+                    ? "/api/categories/" + encodeURIComponent(id)
+                    : "/api/categories",
+                {
+                    method: id ? "PUT" : "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Accept": "application/json"
+                    },
+                    body: JSON.stringify({ categoryName })
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(await getError(response));
+            }
+
+            message.textContent = id
+                ? "Category updated successfully."
+                : "Category added successfully.";
+
+            resetForm();
+            await loadCategories();
+
+        } catch (error) {
+            console.error("Save category error:", error);
+            message.textContent =
+                "Could not save category: " + error.message;
+        } finally {
+            saveButton.disabled = false;
+        }
+    });
+
+    searchField.addEventListener("input", renderCategories);
+
+    cancelButton.addEventListener("click", () => {
+        resetForm();
+        message.textContent = "";
+    });
+
+    loadCategories();
+});
+</script>
+
+</body>
+</html>

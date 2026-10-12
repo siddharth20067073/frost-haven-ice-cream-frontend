@@ -1,0 +1,341 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Ice Creams | Frost Haven</title>
+    <link rel="stylesheet" href="/style.css">
+    <style>
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #bd285e;
+            font-size: 28px;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .brand:hover {
+            color: #80103a;
+        }
+
+        .brand-icon {
+            font-size: 30px;
+        }
+
+        .products-hero {
+            padding: 58px 24px 46px;
+            text-align: center;
+            background: linear-gradient(120deg, #fffaf4, #fff0f5);
+        }
+
+        .products-hero-inner {
+            width: min(900px, 100%);
+            margin: auto;
+        }
+
+        .products-eyebrow {
+            color: #a3154b;
+            font-size: 13px;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .products-hero h1 {
+            margin: 12px 0;
+            font-family: Georgia, serif;
+            font-size: clamp(36px, 5vw, 54px);
+            letter-spacing: -1px;
+        }
+
+        .products-hero p:last-child {
+            max-width: 650px;
+            margin: 0 auto;
+            color: #806d77;
+            font-size: 17px;
+        }
+
+        .products-page {
+            padding-top: 12px;
+            padding-bottom: 48px;
+        }
+
+        .product-filter-section {
+            flex-wrap: wrap;
+            margin-top: 28px;
+            margin-bottom: 30px;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 26px;
+        }
+
+        .loading-card {
+            grid-column: 1 / -1;
+            padding: 50px 20px;
+            text-align: center;
+            color: #806d77;
+            background: #fff;
+            border: 1px solid #f0d5e1;
+            border-radius: 18px;
+        }
+
+        .home-cta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 60px;
+            flex-wrap: wrap;
+            padding: 55px 24px;
+        }
+
+        .home-cta > div:first-child {
+            max-width: 520px;
+        }
+
+        .home-cta .cta-label {
+            color: #a3154b;
+            font-weight: 800;
+            letter-spacing: 2px;
+        }
+
+        .home-cta h2 {
+            font-family: Georgia, serif;
+            font-size: clamp(30px, 4vw, 44px);
+            line-height: 1.2;
+        }
+
+        .cta-emoji {
+            font-size: clamp(70px, 10vw, 110px);
+        }
+
+        .footer-container {
+            width: min(1200px, 100%);
+            margin: auto;
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 32px;
+            text-align: left;
+        }
+
+        .footer-links,
+        .footer-contact,
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
+        }
+
+        .footer-container h3 {
+            margin-top: 0;
+            color: #fff;
+        }
+
+        .footer-container p {
+            color: #f4dce6;
+        }
+
+        .footer-brand .brand {
+            color: #fff;
+        }
+
+        .footer-links a,
+        .footer-contact p {
+            font-size: 14px;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ffffff25;
+            font-size: 13px;
+        }
+
+        @media (max-width: 900px) {
+            .product-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .footer-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .products-hero {
+                padding: 38px 18px;
+            }
+
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+            }
+
+            .home-cta {
+                gap: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header class="site-header">
+    <div class="nav-container">
+        <a href="/" class="brand">
+            <span class="brand-icon">🍦</span>
+            <span>Frost Haven</span>
+        </a>
+
+        <nav class="main-nav">
+            <a href="/">Home</a>
+            <a href="/pages/products.html" class="active">Ice Creams</a>
+            <a href="/pages/about.html">About</a>
+            <a href="/pages/my-orders.html">My Orders</a>
+            <a href="/pages/cart.html" class="cart-link">
+                🛒 Cart <span id="cart-count">0</span>
+            </a>
+            <a href="#" id="logout-link">Logout</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="products-hero">
+        <div class="products-hero-inner">
+            <p class="products-eyebrow">THE FROST HAVEN COLLECTION</p>
+            <h1>Find Your Happy Flavor.</h1>
+            <p>
+                From refreshing fruity favorites to rich, creamy classics,
+                discover your next favorite scoop.
+            </p>
+        </div>
+    </section>
+
+    <section class="products-page">
+        <div class="product-filter-section">
+            <div class="category-buttons">
+                <button type="button"
+                        class="category-btn active"
+                        data-category="All Ice Creams">
+                    All Ice Creams
+                </button>
+
+                <button type="button"
+                        class="category-btn"
+                        data-category="Fruity Delights">
+                    Fruity Delights
+                </button>
+
+                <button type="button"
+                        class="category-btn"
+                        data-category="Chocolate Heaven">
+                    Chocolate Heaven
+                </button>
+
+                <button type="button"
+                        class="category-btn"
+                        data-category="Premium Specials">
+                    Premium Specials
+                </button>
+            </div>
+
+            <div class="product-toolbar">
+                <strong id="product-count">Loading flavors...</strong>
+
+                <select id="sort-products" aria-label="Sort products">
+                    <option value="default">Sort by</option>
+                    <option value="price-low">Price: Low to High</option>
+                    <option value="price-high">Price: High to Low</option>
+                    <option value="name">Name: A to Z</option>
+                </select>
+            </div>
+        </div>
+
+        <section id="product-list" class="product-grid">
+            <div class="loading-card">
+                <div style="font-size: 2rem;">🍦</div>
+                Preparing your delicious ice creams...
+            </div>
+        </section>
+    </section>
+
+    <section class="home-cta">
+        <div>
+            <p class="cta-label">A LITTLE MORE HAPPINESS</p>
+            <h2>Every Flavor Is Worth Trying.</h2>
+            <p>
+                Choose your favorite scoop and make your day a little sweeter.
+            </p>
+            <a href="/pages/cart.html" class="btn-primary">
+                Visit Your Cart →
+            </a>
+        </div>
+        <div class="cta-emoji">🍨</div>
+    </section>
+</main>
+
+<footer class="site-footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <a href="/" class="brand">
+                <span class="brand-icon">🍦</span>
+                <span>Frost Haven</span>
+            </a>
+            <p>Delicious moments, one scoop at a time.</p>
+        </div>
+
+        <div class="footer-links">
+            <h3>Explore</h3>
+            <a href="/">Home</a>
+            <a href="/pages/products.html">Ice Creams</a>
+            <a href="/pages/about.html">About Us</a>
+        </div>
+
+        <div class="footer-links">
+            <h3>Customer</h3>
+            <a href="/pages/cart.html">Shopping Cart</a>
+            <a href="/pages/my-orders.html">My Orders</a>
+        </div>
+
+        <div class="footer-contact">
+            <h3>Frost Haven</h3>
+            <p>🍨 Fresh ice cream</p>
+            <p>📍 Made for sweet moments</p>
+            <p>📧 hello@frosthaven.com</p>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <span>© 2026 Frost Haven. All rights reserved.</span>
+        <span>Made with ❤️ for ice cream lovers.</span>
+    </div>
+</footer>
+
+<script src="/script.js"></script>
+<script>
+    document.getElementById("logout-link").addEventListener("click", function (event) {
+        event.preventDefault();
+        localStorage.removeItem("frostHavenUser");
+        sessionStorage.removeItem("frostHavenReturnTo");
+        window.location.replace("/pages/login.html");
+    });
+</script>
+</body>
+</html>

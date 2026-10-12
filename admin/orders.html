@@ -1,0 +1,375 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Orders | Frost Haven</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #fff9f2;
+            color: #43271f;
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            padding: 20px 5%;
+            background: #fff;
+            border-bottom: 2px solid #f3d9df;
+            box-shadow: 0 3px 14px rgba(65, 35, 35, 0.05);
+        }
+
+        .admin-header h2 {
+            margin: 0;
+            color: #a52d5c;
+        }
+
+        .admin-header nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .admin-header nav a {
+            color: #54372f;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .admin-header nav a:hover {
+            color: #b83268;
+        }
+
+        .admin-page {
+            width: min(1200px, 92%);
+            min-height: 65vh;
+            margin: 36px auto;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 8px;
+            font-size: 32px;
+        }
+
+        .page-heading p {
+            color: #88736b;
+            line-height: 1.6;
+        }
+
+        .admin-filter-section,
+        .admin-section,
+        .admin-form-section {
+            margin: 26px 0;
+            padding: 26px;
+            background: #fff;
+            border: 1px solid #f0dce0;
+            border-radius: 18px;
+            box-shadow: 0 6px 22px rgba(67, 39, 31, 0.05);
+        }
+
+        .admin-filter-section {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: #54372f;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            min-height: 46px;
+            padding: 12px 14px;
+            border: 1px solid #e8ccd7;
+            border-radius: 10px;
+            background: #fffdfb;
+            color: #43271f;
+            font: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: 2px solid #e7a0bc;
+            border-color: #a52d5c;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: 21px;
+        }
+
+        #admin-order-count {
+            padding: 8px 13px;
+            border-radius: 20px;
+            background: #fff0f4;
+            color: #a52d5c;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .admin-table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            min-width: 850px;
+            border-collapse: collapse;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 15px 12px;
+            text-align: left;
+            vertical-align: middle;
+            border-bottom: 1px solid #f2e5e7;
+        }
+
+        .admin-table th {
+            background: #fff1f5;
+            color: #71334c;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .admin-table tbody tr:hover {
+            background: #fffaf8;
+        }
+
+        .primary-button,
+        .secondary-button,
+        .action-button {
+            padding: 10px 15px;
+            border-radius: 9px;
+            font: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .primary-button {
+            border: 1px solid #a52d5c;
+            background: #a52d5c;
+            color: #fff;
+        }
+
+        .primary-button:hover {
+            background: #852047;
+        }
+
+        .secondary-button {
+            border: 1px solid #edcbd8;
+            background: #fff0f4;
+            color: #a52d5c;
+        }
+
+        .secondary-button:hover {
+            background: #fbe0e9;
+        }
+
+        .action-button:hover,
+        .primary-button:hover,
+        .secondary-button:hover {
+            transform: translateY(-1px);
+        }
+
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        #order-details-section[hidden] {
+            display: none !important;
+        }
+
+        #order-details {
+            line-height: 1.8;
+            overflow-wrap: anywhere;
+        }
+
+        #order-details p {
+            padding-bottom: 10px;
+            border-bottom: 1px solid #f2e5e7;
+        }
+
+        footer {
+            margin-top: 44px;
+            padding: 24px;
+            background: #40231f;
+            color: #fff;
+            text-align: center;
+        }
+
+        footer p {
+            margin: 6px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 700px) {
+            .admin-header {
+                padding: 18px 4%;
+            }
+
+            .admin-header nav {
+                gap: 12px;
+            }
+
+            .admin-page {
+                margin: 26px auto;
+            }
+
+            .page-heading h1 {
+                font-size: 27px;
+            }
+
+            .admin-filter-section {
+                grid-template-columns: 1fr;
+            }
+
+            .admin-filter-section,
+            .admin-section,
+            .admin-form-section {
+                padding: 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <h2>🍦 Frost Haven Admin</h2>
+
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="products.html">Products</a>
+            <a href="orders.html">Orders</a>
+            <a href="users.html">Users</a>
+            <a href="categories.html">Categories</a>
+            <a href="login.html">Logout</a>
+        </nav>
+    </header>
+
+    <main class="admin-page">
+        <div class="page-heading">
+            <h1>Manage Orders</h1>
+            <p>View and manage customer orders.</p>
+        </div>
+
+        <section class="admin-filter-section">
+            <div class="form-group">
+                <label for="order-search">Search Orders</label>
+                <input
+                    type="text"
+                    id="order-search"
+                    placeholder="Search by order ID or customer"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="order-status-filter">Filter by Status</label>
+                <select id="order-status-filter">
+                    <option value="all">All Orders</option>
+                    <option value="Pending">Pending</option>
+                    <option value="Confirmed">Confirmed</option>
+                    <option value="Preparing">Preparing</option>
+                    <option value="Out for Delivery">Out for Delivery</option>
+                    <option value="Delivered">Delivered</option>
+                    <option value="Cancelled">Cancelled</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="section-heading">
+                <h2>Customer Orders</h2>
+                <span id="admin-order-count">0 Orders</span>
+            </div>
+
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Date</th>
+                            <th>Items</th>
+                            <th>Total</th>
+                            <th>Payment</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="admin-order-list">
+                        <tr>
+                            <td colspan="8">Loading orders...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section
+            id="order-details-section"
+            class="admin-form-section"
+            hidden
+        >
+            <div class="section-heading">
+                <h2>Order Details</h2>
+
+                <button
+                    type="button"
+                    id="close-order-details"
+                    class="secondary-button"
+                >
+                    Close
+                </button>
+            </div>
+
+            <div id="order-details">
+                <p>Select an order to view details.</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Frost Haven. All rights reserved.</p>
+        <p>Admin Panel</p>
+    </footer>
+
+    <script src="../script.js"></script>
+</body>
+</html>

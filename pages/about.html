@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>About Us | Frost Haven</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+    <style>
+        .about-hero {
+            text-align: center;
+            padding: 65px 20px 55px;
+            background: linear-gradient(135deg, #fff0f5, #fffaf4);
+        }
+
+        .about-hero .about-icon {
+            display: inline-block;
+            font-size: 48px;
+            margin-bottom: 12px;
+        }
+
+        .about-hero h1 {
+            color: #a3154b;
+            font-size: clamp(30px, 5vw, 46px);
+            margin: 0 0 16px;
+        }
+
+        .about-hero p {
+            max-width: 680px;
+            margin: 10px auto;
+            color: #806d77;
+            font-size: 17px;
+            line-height: 1.8;
+        }
+
+        .about-content {
+            max-width: 1150px;
+            margin: 0 auto;
+            padding: 55px 24px;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 25px;
+            margin-bottom: 55px;
+        }
+
+        .about-card {
+            background: #fff;
+            padding: 32px 25px;
+            border: 1px solid #f0d5e1;
+            border-radius: 18px;
+            text-align: center;
+            box-shadow: 0 8px 25px rgba(80, 30, 50, 0.06);
+            transition: transform 0.25s ease,
+                        box-shadow 0.25s ease;
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 14px 30px rgba(80, 30, 50, 0.11);
+        }
+
+        .about-card-icon {
+            font-size: 43px;
+            margin-bottom: 16px;
+        }
+
+        .about-card h2 {
+            color: #a3154b;
+            font-size: 21px;
+            margin: 0 0 14px;
+        }
+
+        .about-card p {
+            color: #806d77;
+            line-height: 1.8;
+            margin: 0;
+        }
+
+        .about-story {
+            background: #fff0f5;
+            border: 1px solid #f0d5e1;
+            border-radius: 22px;
+            padding: 42px 30px;
+            text-align: center;
+        }
+
+        .about-story h2 {
+            color: #a3154b;
+            font-size: 28px;
+            margin: 0 0 18px;
+        }
+
+        .about-story p {
+            max-width: 760px;
+            margin: 0 auto 26px;
+            color: #806d77;
+            line-height: 1.9;
+            font-size: 16px;
+        }
+
+        .about-story .primary-button {
+            display: inline-block;
+            text-decoration: none;
+            background: #a3154b;
+            color: #fff;
+            padding: 13px 25px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: background 0.2s ease,
+                        transform 0.2s ease;
+        }
+
+        .about-story .primary-button:hover {
+            background: #80103a;
+            transform: translateY(-2px);
+        }
+
+        .about-footer {
+            text-align: center;
+            padding: 25px 20px;
+            background: #fffaf4;
+            border-top: 1px solid #f0d5e1;
+            color: #806d77;
+            line-height: 1.8;
+        }
+
+        .about-footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 768px) {
+            .about-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-hero {
+                padding: 45px 18px;
+            }
+
+            .about-content {
+                padding: 35px 18px;
+            }
+
+            .about-card {
+                padding: 28px 22px;
+            }
+
+            .about-story {
+                padding: 32px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="/" class="brand" style="text-decoration: none;">
+                🍦 Frost Haven
+            </a>
+
+            <nav>
+                <a href="/">Home</a>
+                <a href="/pages/products.html">Ice Creams</a>
+                <a href="/pages/about.html" class="active">About</a>
+                <a href="/pages/my-orders.html">My Orders</a>
+                <a href="/pages/cart.html">🛒 Cart</a>
+                <a href="#" id="logout-button">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="about-page">
+
+        <section class="about-hero">
+            <span class="about-icon">🍨</span>
+
+            <h1>About Frost Haven</h1>
+
+            <p>
+                Welcome to Frost Haven, where every scoop brings a smile.
+            </p>
+
+            <p>
+                We bring you delicious ice creams made for every mood
+                and every occasion.
+            </p>
+        </section>
+
+        <div class="about-content">
+
+            <section class="about-grid">
+
+                <article class="about-card">
+                    <div class="about-card-icon">🍦</div>
+
+                    <h2>Our Ice Creams</h2>
+
+                    <p>
+                        Explore our collection of delicious flavors,
+                        carefully selected to give you a memorable
+                        ice cream experience.
+                    </p>
+                </article>
+
+                <article class="about-card">
+                    <div class="about-card-icon">❤️</div>
+
+                    <h2>Made With Care</h2>
+
+                    <p>
+                        We believe great ice cream should be simple,
+                        delicious and enjoyable for everyone.
+                    </p>
+                </article>
+
+                <article class="about-card">
+                    <div class="about-card-icon">🚀</div>
+
+                    <h2>Easy Ordering</h2>
+
+                    <p>
+                        Browse our products, add your favorites to the
+                        cart and place your order easily online.
+                    </p>
+                </article>
+
+            </section>
+
+            <section class="about-story">
+                <h2>Why Choose Frost Haven?</h2>
+
+                <p>
+                    Frost Haven is designed to make buying ice cream
+                    simple and convenient. From browsing flavors to
+                    placing an order, our online store provides a smooth
+                    shopping experience.
+                </p>
+
+                <a href="/pages/products.html" class="primary-button">
+                    Explore Our Ice Creams
+                </a>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="about-footer">
+        <p>© 2026 Frost Haven. All rights reserved.</p>
+        <p>Made with ❤️ for ice cream lovers.</p>
+    </footer>
+
+    <script>
+        document.getElementById("logout-button").addEventListener("click", function (event) {
+            event.preventDefault();
+
+            if (confirm("Are you sure you want to logout?")) {
+                localStorage.removeItem("frostHavenUser");
+                localStorage.removeItem("frostHavenReturnTo");
+                window.location.href = "/pages/login.html";
+            }
+        });
+    </script>
+
+</body>
+</html>

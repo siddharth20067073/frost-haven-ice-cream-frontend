@@ -1,0 +1,473 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Your Cart | Frost Haven</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+    <style>
+        .cart-hero {
+            padding: 45px 20px 25px;
+            text-align: center;
+            background: linear-gradient(135deg, #fff0f5, #fffaf4);
+        }
+
+        .cart-hero .cart-icon {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .cart-hero h1 {
+            color: #a3154b;
+            font-size: clamp(28px, 4vw, 40px);
+            margin: 0 0 12px;
+        }
+
+        .cart-hero p {
+            color: #806d77;
+            line-height: 1.7;
+            margin: 0;
+        }
+
+        .cart-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 35px 22px 55px;
+        }
+
+        .cart-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.7fr) minmax(280px, 1fr);
+            gap: 28px;
+            align-items: start;
+        }
+
+        .cart-items-panel,
+        .order-summary {
+            background: #fff;
+            border: 1px solid #f0d5e1;
+            border-radius: 18px;
+            padding: 26px;
+            box-shadow: 0 8px 25px rgba(80, 30, 50, 0.06);
+        }
+
+        .cart-items-panel h2,
+        .order-summary h2 {
+            color: #a3154b;
+            margin: 0 0 22px;
+            font-size: 23px;
+        }
+
+        #cart-items {
+            color: #38222d;
+        }
+
+        #cart-items:empty {
+            display: none;
+        }
+
+        .empty-cart {
+            padding: 30px 15px;
+            text-align: center;
+            color: #806d77;
+        }
+
+        .empty-cart .empty-cart-icon {
+            font-size: 52px;
+            margin-bottom: 12px;
+        }
+
+        .empty-cart h3 {
+            color: #a3154b;
+            margin: 0 0 10px;
+        }
+
+        .empty-cart p {
+            line-height: 1.7;
+            margin: 0 0 22px;
+        }
+
+        .cart-count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 21px;
+            height: 21px;
+            padding: 0 5px;
+            border-radius: 20px;
+            background: #a3154b;
+            color: #fff;
+            font-size: 12px;
+            box-sizing: border-box;
+        }
+
+        .order-summary {
+            position: sticky;
+            top: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 13px 0;
+            color: #806d77;
+            border-bottom: 1px solid #f5e5ec;
+        }
+
+        .summary-row span:last-child {
+            color: #38222d;
+            font-weight: 600;
+        }
+
+        .summary-row.cart-total {
+            margin-top: 5px;
+            padding: 18px 0;
+            border-bottom: none;
+            color: #a3154b;
+            font-size: 19px;
+            font-weight: 700;
+        }
+
+        .summary-row.cart-total span:last-child {
+            color: #a3154b;
+            font-size: 21px;
+        }
+
+        .checkout-button,
+        .continue-shopping,
+        .shop-now-button {
+            display: flex;
+            width: 100%;
+            box-sizing: border-box;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            text-decoration: none;
+            font: inherit;
+            font-weight: 600;
+            border-radius: 30px;
+            padding: 14px 18px;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .checkout-button,
+        .shop-now-button {
+            border: none;
+            background: #a3154b;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .checkout-button:hover,
+        .shop-now-button:hover {
+            background: #80103a;
+            transform: translateY(-1px);
+        }
+
+        .continue-shopping {
+            margin-top: 12px;
+            color: #a3154b;
+            border: 1px solid #e7ccd8;
+            background: #fff;
+        }
+
+        .continue-shopping:hover {
+            background: #fff0f5;
+        }
+
+        .summary-note {
+            margin: 18px 0 0;
+            color: #806d77;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .cart-footer {
+            padding: 22px 15px;
+            text-align: center;
+            background: #fffaf4;
+            border-top: 1px solid #f0d5e1;
+            color: #806d77;
+            line-height: 1.8;
+        }
+
+        .cart-footer p {
+            margin: 4px 0;
+        }
+
+        /* Styling for cart item rows generated by script.js */
+        #cart-items > div,
+        #cart-items > article {
+            margin-bottom: 14px;
+        }
+
+        #cart-items img {
+            max-width: 100%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 12px;
+        }
+
+        #cart-items button {
+            cursor: pointer;
+        }
+
+        @media (max-width: 800px) {
+            .cart-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .order-summary {
+                position: static;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .cart-hero {
+                padding: 35px 16px 20px;
+            }
+
+            .cart-content {
+                padding: 25px 14px 40px;
+            }
+
+            .cart-items-panel,
+            .order-summary {
+                padding: 20px 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="nav-container">
+
+            <a href="/" class="brand" style="text-decoration: none;">
+                🍦 Frost Haven
+            </a>
+
+            <nav>
+                <a href="/">Home</a>
+                <a href="/pages/products.html">Ice Creams</a>
+                <a href="/pages/about.html">About</a>
+                <a href="/pages/my-orders.html">My Orders</a>
+                <a href="/pages/cart.html" class="active">
+                    🛒 Cart
+                    <span class="cart-count">0</span>
+                </a>
+                <a href="#" id="logout-button">Logout</a>
+            </nav>
+
+        </div>
+    </header>
+
+    <section class="cart-hero">
+        <div class="cart-icon">🛒</div>
+
+        <h1>Your Shopping Cart</h1>
+
+        <p>
+            Your favorite ice creams are waiting for you.
+            Review your items before checkout.
+        </p>
+    </section>
+
+    <main class="cart-content">
+
+        <div class="cart-layout">
+
+            <section class="cart-items-panel">
+                <h2>Your Items</h2>
+
+                <div id="cart-items">
+                    <p>Your cart is empty.</p>
+                </div>
+            </section>
+
+            <aside class="order-summary">
+
+                <h2>Order Summary</h2>
+
+                <p class="summary-row">
+                    <span>Items</span>
+                    <span id="cart-count-summary">0</span>
+                </p>
+
+                <p class="summary-row">
+                    <span>Subtotal</span>
+                    <span>₹<span id="cart-subtotal">0.00</span></span>
+                </p>
+
+                <p class="summary-row">
+                    <span>Delivery</span>
+                    <span>Free</span>
+                </p>
+
+                <p class="summary-row cart-total">
+                    <span>Total</span>
+                    <span>₹<span id="cart-total">0.00</span></span>
+                </p>
+
+                <button
+                    id="checkout-btn"
+                    class="checkout-button"
+                    type="button"
+                    onclick="goToCheckout()">
+                    Proceed to Checkout →
+                </button>
+
+                <a href="/pages/products.html" class="continue-shopping">
+                    ← Continue Shopping
+                </a>
+
+                <p class="summary-note">
+                    ❤️ Thank you for choosing Frost Haven!
+                </p>
+
+            </aside>
+
+        </div>
+
+    </main>
+
+    <footer class="cart-footer">
+        <p>© 2026 Frost Haven. All rights reserved.</p>
+        <p>Made with ❤️ for ice cream lovers.</p>
+    </footer>
+
+    <script src="/script.js"></script>
+
+    <script>
+        function updateCartSummary() {
+            let cart = [];
+
+            try {
+                cart = JSON.parse(
+                    localStorage.getItem("frostHavenCart") || "[]"
+                );
+
+                if (!Array.isArray(cart)) {
+                    cart = [];
+                }
+            } catch (error) {
+                cart = [];
+            }
+
+            const itemCount = cart.reduce(function (sum, item) {
+                return sum + Math.max(0, Number(item.quantity) || 0);
+            }, 0);
+
+            const subtotal = cart.reduce(function (sum, item) {
+                const price = Math.max(0, Number(item.price) || 0);
+                const quantity = Math.max(0, Number(item.quantity) || 0);
+
+                return sum + price * quantity;
+            }, 0);
+
+            const countElement =
+                document.getElementById("cart-count-summary");
+
+            const subtotalElement =
+                document.getElementById("cart-subtotal");
+
+            const totalElement =
+                document.getElementById("cart-total");
+
+            const headerCounts =
+                document.querySelectorAll(".cart-count");
+
+            if (countElement) {
+                countElement.textContent = itemCount;
+            }
+
+            if (subtotalElement) {
+                subtotalElement.textContent = subtotal.toFixed(2);
+            }
+
+            if (totalElement) {
+                totalElement.textContent = subtotal.toFixed(2);
+            }
+
+            headerCounts.forEach(function (element) {
+                element.textContent = itemCount;
+            });
+
+            const itemsContainer = document.getElementById("cart-items");
+
+            if (itemsContainer && cart.length === 0) {
+                itemsContainer.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="empty-cart-icon">🍦</div>
+                        <h3>Your cart is empty</h3>
+                        <p>
+                            You haven't added any ice creams yet.
+                            Explore our collection and find your favorites!
+                        </p>
+                        <a href="/pages/products.html" class="shop-now-button">
+                            Explore Ice Creams
+                        </a>
+                    </div>
+                `;
+            }
+        }
+
+        function goToCheckout() {
+            let cart = [];
+
+            try {
+                cart = JSON.parse(
+                    localStorage.getItem("frostHavenCart") || "[]"
+                );
+
+                if (!Array.isArray(cart)) {
+                    cart = [];
+                }
+            } catch (error) {
+                cart = [];
+            }
+
+            if (cart.length === 0) {
+                alert("Your cart is empty. Please add an ice cream first.");
+                return;
+            }
+
+            window.location.href = "/pages/checkout.html";
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            updateCartSummary();
+
+            const logoutButton =
+                document.getElementById("logout-button");
+
+            if (logoutButton) {
+                logoutButton.addEventListener("click", function (event) {
+                    event.preventDefault();
+
+                    if (confirm("Are you sure you want to logout?")) {
+                        localStorage.removeItem("frostHavenUser");
+                        localStorage.removeItem("frostHavenReturnTo");
+
+                        window.location.href = "/pages/login.html";
+                    }
+                });
+            }
+
+            window.addEventListener("storage", function (event) {
+                if (event.key === "frostHavenCart") {
+                    updateCartSummary();
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

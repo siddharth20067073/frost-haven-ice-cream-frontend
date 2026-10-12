@@ -1,0 +1,567 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Orders | Frost Haven</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+    <style>
+        .orders-hero {
+            padding: 42px 20px 32px;
+            text-align: center;
+            background: linear-gradient(135deg, #fff0f5, #fffaf4);
+        }
+
+        .orders-hero .hero-icon {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+
+        .orders-hero h1 {
+            margin: 0 0 10px;
+            color: #a3154b;
+            font-size: clamp(28px, 4vw, 40px);
+        }
+
+        .orders-hero p {
+            margin: 0;
+            color: #806d77;
+            line-height: 1.7;
+        }
+
+        .orders-page {
+            max-width: 1100px;
+            min-height: 350px;
+            margin: 0 auto;
+            padding: 35px 22px 55px;
+        }
+
+        .orders-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+
+        .orders-toolbar h2 {
+            margin: 0;
+            color: #a3154b;
+            font-size: 23px;
+        }
+
+        .orders-toolbar button {
+            padding: 10px 18px;
+            border: 1px solid #e7ccd8;
+            border-radius: 25px;
+            background: #fff;
+            color: #a3154b;
+            font: inherit;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .orders-toolbar button:hover {
+            background: #fff0f5;
+        }
+
+        .orders-section {
+            display: grid;
+            gap: 20px;
+        }
+
+        .order-card {
+            padding: 25px;
+            background: #fff;
+            border: 1px solid #f0d5e1;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(80, 30, 50, 0.06);
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .order-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 28px rgba(80, 30, 50, 0.10);
+        }
+
+        .order-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            padding-bottom: 18px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #f5e5ec;
+        }
+
+        .order-card h3 {
+            margin: 0;
+            color: #a3154b;
+            font-size: 20px;
+        }
+
+        .order-status {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 7px 13px;
+            border-radius: 25px;
+            background: #fff0f5;
+            color: #a3154b;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .order-status.status-delivered {
+            background: #e8f7ed;
+            color: #167447;
+        }
+
+        .order-status.status-cancelled {
+            background: #ffebee;
+            color: #b00020;
+        }
+
+        .order-status.status-processing {
+            background: #fff3df;
+            color: #8a5700;
+        }
+
+        .order-details {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px 25px;
+        }
+
+        .order-detail {
+            margin: 0;
+            color: #806d77;
+            line-height: 1.7;
+            overflow-wrap: anywhere;
+        }
+
+        .order-detail strong {
+            color: #38222d;
+            font-weight: 600;
+        }
+
+        .order-total {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            padding-top: 18px;
+            margin-top: 20px;
+            border-top: 1px solid #f5e5ec;
+            color: #a3154b;
+            font-size: 17px;
+            font-weight: 700;
+        }
+
+        .order-total strong {
+            font-size: 21px;
+        }
+
+        .orders-message {
+            padding: 35px 22px;
+            background: #fff;
+            border: 1px solid #f0d5e1;
+            border-radius: 18px;
+            color: #806d77;
+            text-align: center;
+            line-height: 1.8;
+            box-shadow: 0 8px 25px rgba(80, 30, 50, 0.04);
+        }
+
+        .orders-message .message-icon {
+            margin-bottom: 12px;
+            font-size: 43px;
+        }
+
+        .orders-message h3 {
+            margin: 0 0 10px;
+            color: #a3154b;
+        }
+
+        .orders-message p {
+            margin: 0 0 18px;
+        }
+
+        .orders-message a {
+            color: #a3154b;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .orders-message a:hover {
+            text-decoration: underline;
+        }
+
+        .orders-footer {
+            padding: 22px 15px;
+            background: #fffaf4;
+            border-top: 1px solid #f0d5e1;
+            color: #806d77;
+            text-align: center;
+            line-height: 1.8;
+        }
+
+        .orders-footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 600px) {
+            .orders-page {
+                padding: 25px 14px 40px;
+            }
+
+            .order-card {
+                padding: 19px 16px;
+            }
+
+            .order-details {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .orders-toolbar {
+                align-items: flex-start;
+            }
+
+            .order-card-header {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="nav-container">
+
+            <a href="/" class="brand" style="text-decoration: none;">
+                🍦 Frost Haven
+            </a>
+
+            <nav>
+                <a href="/">Home</a>
+                <a href="/pages/products.html">Ice Creams</a>
+                <a href="/pages/about.html">About</a>
+                <a href="/pages/my-orders.html" class="active">My Orders</a>
+                <a href="/pages/cart.html">
+                    🛒 Cart <span class="cart-count">0</span>
+                </a>
+                <a href="#" id="logout-button">Logout</a>
+            </nav>
+
+        </div>
+    </header>
+
+    <section class="orders-hero">
+        <div class="hero-icon">📦</div>
+
+        <h1>My Orders</h1>
+
+        <p>
+            Keep track of your Frost Haven orders in one place.
+        </p>
+    </section>
+
+    <main class="orders-page">
+
+        <div class="orders-toolbar">
+            <h2>Your Order History</h2>
+
+            <button type="button" id="refresh-orders">
+                ↻ Refresh Orders
+            </button>
+        </div>
+
+        <section
+            class="orders-section"
+            id="orders-list"
+            aria-live="polite"
+        >
+            <div class="orders-message">
+                Loading your orders...
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="orders-footer">
+        <p>© 2026 Frost Haven. All rights reserved.</p>
+        <p>Made with ❤️ for ice cream lovers.</p>
+    </footer>
+
+    <script>
+        "use strict";
+
+        function updateCartCount() {
+            let cart = [];
+
+            try {
+                cart = JSON.parse(
+                    localStorage.getItem("frostHavenCart") || "[]"
+                );
+
+                if (!Array.isArray(cart)) {
+                    cart = [];
+                }
+            } catch (error) {
+                cart = [];
+            }
+
+            const count = cart.reduce((total, item) => {
+                return total + Math.max(0, Number(item.quantity) || 0);
+            }, 0);
+
+            document.querySelectorAll(
+                ".cart-count, #cart-count, [data-cart-count]"
+            ).forEach(element => {
+                element.textContent = count;
+            });
+        }
+
+        function formatDate(value) {
+            if (!value) {
+                return "Date unavailable";
+            }
+
+            const date = new Date(value);
+
+            if (Number.isNaN(date.getTime())) {
+                return String(value);
+            }
+
+            return date.toLocaleString();
+        }
+
+        function getStatusClass(status) {
+            const normalized = String(status || "")
+                .trim()
+                .toLowerCase();
+
+            if (
+                normalized === "delivered" ||
+                normalized === "completed"
+            ) {
+                return "status-delivered";
+            }
+
+            if (
+                normalized === "cancelled" ||
+                normalized === "canceled"
+            ) {
+                return "status-cancelled";
+            }
+
+            if (
+                normalized === "processing" ||
+                normalized === "preparing" ||
+                normalized === "shipped" ||
+                normalized === "out for delivery"
+            ) {
+                return "status-processing";
+            }
+
+            return "";
+        }
+
+        function createOrderCard(order) {
+            const card = document.createElement("article");
+            card.className = "order-card";
+
+            const header = document.createElement("div");
+            header.className = "order-card-header";
+
+            const title = document.createElement("h3");
+            title.textContent = `Order #${order.id ?? "Unavailable"}`;
+
+            const status = document.createElement("span");
+            status.className =
+                "order-status " + getStatusClass(order.orderStatus);
+
+            status.textContent = order.orderStatus || "Pending";
+
+            header.append(title, status);
+
+            const details = document.createElement("div");
+            details.className = "order-details";
+
+            function addDetail(label, value) {
+                const paragraph = document.createElement("p");
+                paragraph.className = "order-detail";
+
+                const labelElement = document.createElement("strong");
+                labelElement.textContent = label + ": ";
+
+                const valueElement = document.createElement("span");
+                valueElement.textContent =
+                    value == null || value === ""
+                        ? "Not provided"
+                        : String(value);
+
+                paragraph.append(labelElement, valueElement);
+                details.appendChild(paragraph);
+            }
+
+            addDetail("Order Date", formatDate(order.orderDate));
+            addDetail("Customer", order.customerName);
+            addDetail("Payment Method", order.paymentMethod);
+
+            const total = Number(order.totalAmount);
+
+            const totalRow = document.createElement("div");
+            totalRow.className = "order-total";
+
+            const totalLabel = document.createElement("span");
+            totalLabel.textContent = "Order Total";
+
+            const totalAmount = document.createElement("strong");
+            totalAmount.textContent =
+                "₹" + (
+                    Number.isFinite(total) ? total.toFixed(2) : "0.00"
+                );
+
+            totalRow.append(totalLabel, totalAmount);
+            card.append(header, details, totalRow);
+
+            return card;
+        }
+
+        function showOrdersMessage(title, description, showShopLink) {
+            const container = document.getElementById("orders-list");
+
+            const message = document.createElement("div");
+            message.className = "orders-message";
+
+            const icon = document.createElement("div");
+            icon.className = "message-icon";
+            icon.textContent = showShopLink ? "🍦" : "📦";
+
+            const heading = document.createElement("h3");
+            heading.textContent = title;
+
+            const paragraph = document.createElement("p");
+            paragraph.textContent = description;
+
+            message.append(icon, heading, paragraph);
+
+            if (showShopLink) {
+                const link = document.createElement("a");
+                link.href = "/pages/products.html";
+                link.textContent = "Explore Ice Creams";
+
+                message.appendChild(link);
+            }
+
+            container.replaceChildren(message);
+        }
+
+        async function loadOrders() {
+            const container = document.getElementById("orders-list");
+
+            const loading = document.createElement("div");
+            loading.className = "orders-message";
+            loading.textContent = "Loading your orders...";
+
+            container.replaceChildren(loading);
+
+            try {
+                const response = await fetch("/api/orders", {
+                    method: "GET",
+                    headers: {
+                        "Accept": "application/json"
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(
+                        `Server returned ${response.status}`
+                    );
+                }
+
+                const orders = await response.json();
+
+                if (!Array.isArray(orders)) {
+                    throw new Error(
+                        "Unexpected response from the server."
+                    );
+                }
+
+                if (orders.length === 0) {
+                    showOrdersMessage(
+                        "No Orders Yet",
+                        "Your next favorite ice cream is waiting for you.",
+                        true
+                    );
+                    return;
+                }
+
+                orders.sort((a, b) => {
+                    const dateA =
+                        new Date(a.orderDate || 0).getTime();
+
+                    const dateB =
+                        new Date(b.orderDate || 0).getTime();
+
+                    return dateB - dateA;
+                });
+
+                const fragment = document.createDocumentFragment();
+
+                orders.forEach(order => {
+                    fragment.appendChild(createOrderCard(order));
+                });
+
+                container.replaceChildren(fragment);
+
+            } catch (error) {
+                console.error("Could not load orders:", error);
+
+                showOrdersMessage(
+                    "Unable to Load Orders",
+                    "Check that Frost Haven is running, then try refreshing.",
+                    false
+                );
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            updateCartCount();
+            loadOrders();
+
+            document.getElementById("refresh-orders")
+                .addEventListener("click", loadOrders);
+
+            const logoutButton =
+                document.getElementById("logout-button");
+
+            if (logoutButton) {
+                logoutButton.addEventListener("click", event => {
+                    event.preventDefault();
+
+                    if (confirm("Are you sure you want to logout?")) {
+                        localStorage.removeItem("frostHavenUser");
+                        localStorage.removeItem("frostHavenReturnTo");
+
+                        window.location.href = "/pages/login.html";
+                    }
+                });
+            }
+        });
+
+        window.addEventListener("storage", updateCartCount);
+    </script>
+
+</body>
+</html>

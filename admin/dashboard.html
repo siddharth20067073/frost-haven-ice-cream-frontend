@@ -1,0 +1,599 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Frost Haven</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: #fff9f2;
+            color: #3b241d;
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 18px;
+            padding: 20px 5%;
+            background: #ffffff;
+            border-bottom: 2px solid #f3d9df;
+            box-shadow: 0 3px 14px rgba(65, 35, 35, 0.05);
+        }
+
+        .admin-header h2 {
+            margin: 0;
+            color: #a52d5c;
+        }
+
+        .admin-header nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .admin-header nav a {
+            color: #54372f;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .admin-header nav a:hover {
+            color: #b83268;
+        }
+
+        .admin-page {
+            width: min(1200px, 92%);
+            margin: 36px auto;
+            min-height: 65vh;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 8px;
+            color: #43271f;
+            font-size: 32px;
+        }
+
+        .page-heading p {
+            margin-top: 0;
+            color: #88736b;
+            line-height: 1.6;
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 20px;
+            margin: 28px 0 36px;
+        }
+
+        .stat-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 24px;
+            background: #ffffff;
+            border: 1px solid #f0dce0;
+            border-radius: 18px;
+            box-shadow: 0 6px 22px rgba(67, 39, 31, 0.06);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 26px rgba(67, 39, 31, 0.10);
+        }
+
+        .stat-icon {
+            display: grid;
+            place-items: center;
+            width: 56px;
+            height: 56px;
+            flex-shrink: 0;
+            background: #fff0f4;
+            border-radius: 16px;
+            font-size: 26px;
+        }
+
+        .stat-card h3 {
+            margin: 0 0 8px;
+            color: #88736b;
+            font-size: 14px;
+        }
+
+        .stat-card strong {
+            color: #a52d5c;
+            font-size: 25px;
+            overflow-wrap: anywhere;
+        }
+
+        .admin-section {
+            margin: 28px 0;
+            padding: 26px;
+            background: #ffffff;
+            border: 1px solid #f0dce0;
+            border-radius: 18px;
+            box-shadow: 0 6px 22px rgba(67, 39, 31, 0.05);
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            color: #43271f;
+            font-size: 21px;
+        }
+
+        .section-heading a,
+        .admin-action-card h3 {
+            color: #a52d5c;
+        }
+
+        .section-heading a {
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .section-heading a:hover {
+            text-decoration: underline;
+        }
+
+        .admin-actions {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .admin-action-card {
+            display: block;
+            padding: 22px;
+            background: #fffaf7;
+            border: 1px solid #f0dce0;
+            border-radius: 16px;
+            text-decoration: none;
+            color: #54372f;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+        }
+
+        .admin-action-card:hover {
+            transform: translateY(-4px);
+            border-color: #d99ab1;
+            box-shadow: 0 10px 24px rgba(67, 39, 31, 0.09);
+        }
+
+        .admin-action-card > span {
+            font-size: 30px;
+        }
+
+        .admin-action-card h3 {
+            margin: 14px 0 8px;
+            font-size: 17px;
+        }
+
+        .admin-action-card p {
+            margin-bottom: 0;
+            color: #88736b;
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .admin-table-container {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .admin-table {
+            width: 100%;
+            min-width: 520px;
+            border-collapse: collapse;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 1px solid #f2e5e7;
+        }
+
+        .admin-table th {
+            background: #fff1f5;
+            color: #71334c;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .admin-table tbody tr:hover {
+            background: #fffaf8;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 6px 11px;
+            border-radius: 20px;
+            background: #fff0d6;
+            color: #805500;
+            font-size: 12px;
+            font-weight: 700;
+        }
+
+        .admin-product-list {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .low-stock-item {
+            padding: 18px;
+            background: #fffaf7;
+            border: 1px solid #f0dce0;
+            border-radius: 14px;
+        }
+
+        .low-stock-item h3 {
+            margin: 0 0 10px;
+            color: #54372f;
+            overflow-wrap: anywhere;
+        }
+
+        .low-stock-item p {
+            margin: 0;
+            color: #a52d5c;
+            font-weight: 600;
+        }
+
+        .message {
+            padding: 12px 0;
+            color: #88736b;
+            line-height: 1.6;
+        }
+
+        footer {
+            margin-top: 44px;
+            padding: 24px;
+            text-align: center;
+            background: #40231f;
+            color: #ffffff;
+        }
+
+        footer p {
+            margin: 6px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 950px) {
+            .admin-stats {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .admin-actions {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+
+            .admin-product-list {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (max-width: 600px) {
+            .admin-header {
+                padding: 18px 4%;
+            }
+
+            .admin-header nav {
+                gap: 12px;
+            }
+
+            .admin-page {
+                width: 92%;
+                margin: 26px auto;
+            }
+
+            .page-heading h1 {
+                font-size: 27px;
+            }
+
+            .admin-stats,
+            .admin-actions,
+            .admin-product-list {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-card {
+                padding: 20px;
+            }
+
+            .admin-section {
+                padding: 17px;
+            }
+
+            .section-heading h2 {
+                font-size: 19px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="admin-header">
+        <h2>🍦 Frost Haven Admin</h2>
+
+        <nav>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="products.html">Products</a>
+            <a href="orders.html">Orders</a>
+            <a href="users.html">Users</a>
+            <a href="categories.html">Categories</a>
+            <a href="login.html" id="logout-link">Logout</a>
+        </nav>
+    </header>
+
+    <main class="admin-page">
+        <div class="page-heading">
+            <h1>Admin Dashboard</h1>
+            <p>Manage your Frost Haven store from one place.</p>
+        </div>
+
+        <section class="admin-stats">
+            <div class="stat-card">
+                <div class="stat-icon">🍦</div>
+                <div>
+                    <h3>Products</h3>
+                    <strong id="total-products">—</strong>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📦</div>
+                <div>
+                    <h3>Orders</h3>
+                    <strong id="total-orders">—</strong>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div>
+                    <h3>Users</h3>
+                    <strong id="total-users">—</strong>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div>
+                    <h3>Total Sales</h3>
+                    <strong>₹<span id="total-sales">—</span></strong>
+                </div>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="section-heading">
+                <h2>Quick Actions</h2>
+            </div>
+
+            <div class="admin-actions">
+                <a href="products.html" class="admin-action-card">
+                    <span>🍦</span>
+                    <h3>Manage Products</h3>
+                    <p>Add, edit or remove ice creams.</p>
+                </a>
+
+                <a href="orders.html" class="admin-action-card">
+                    <span>📦</span>
+                    <h3>Manage Orders</h3>
+                    <p>View and update customer orders.</p>
+                </a>
+
+                <a href="users.html" class="admin-action-card">
+                    <span>👥</span>
+                    <h3>Manage Users</h3>
+                    <p>View registered customers.</p>
+                </a>
+
+                <a href="categories.html" class="admin-action-card">
+                    <span>🗂️</span>
+                    <h3>Manage Categories</h3>
+                    <p>Organize your ice cream categories.</p>
+                </a>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="section-heading">
+                <h2>Recent Orders</h2>
+                <a href="orders.html">View All</a>
+            </div>
+
+            <div class="admin-table-container">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Total</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="recent-orders">
+                        <tr><td colspan="4">Loading orders...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="admin-section">
+            <div class="section-heading">
+                <h2>Low Stock Products</h2>
+                <a href="products.html">Manage Products</a>
+            </div>
+
+            <div id="low-stock-products" class="admin-product-list">
+                <p class="message">Loading products...</p>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>© 2026 Frost Haven. All rights reserved.</p>
+        <p>Admin Panel</p>
+    </footer>
+
+    <script>
+        "use strict";
+
+        const money = value =>
+            Number(value || 0).toLocaleString("en-IN", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            });
+
+        const safe = value =>
+            String(value ?? "").replace(/[&<>"']/g, char => ({
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            })[char]);
+
+        async function fetchArray(url) {
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error(url + " returned HTTP " + response.status);
+            }
+
+            const data = await response.json();
+
+            if (Array.isArray(data)) return data;
+            if (Array.isArray(data.content)) return data.content;
+            if (Array.isArray(data.data)) return data.data;
+            if (Array.isArray(data.orders)) return data.orders;
+            if (Array.isArray(data.products)) return data.products;
+            if (Array.isArray(data.users)) return data.users;
+
+            throw new Error(url + " did not return an array");
+        }
+
+        async function loadProducts() {
+            const count = document.getElementById("total-products");
+            const lowStock = document.getElementById("low-stock-products");
+
+            try {
+                const products = await fetchArray("/api/products");
+                count.textContent = products.length;
+
+                const low = products.filter(product =>
+                    Number(product.stock ?? 0) <= 5
+                );
+
+                if (!low.length) {
+                    lowStock.innerHTML =
+                        '<p class="message">No products currently have 5 or fewer items in stock.</p>';
+                    return products;
+                }
+
+                lowStock.innerHTML = low.map(product => `
+                    <article class="low-stock-item">
+                        <h3>${safe(product.productName ?? product.name ?? "Unnamed product")}</h3>
+                        <p>Stock remaining: ${Number(product.stock ?? 0)}</p>
+                    </article>
+                `).join("");
+
+                return products;
+            } catch (error) {
+                console.error("Could not load products:", error);
+                count.textContent = "Unavailable";
+                lowStock.innerHTML =
+                    '<p class="message">Could not load products. Check the browser console.</p>';
+                return null;
+            }
+        }
+
+        async function loadOrders() {
+            const count = document.getElementById("total-orders");
+            const totalSales = document.getElementById("total-sales");
+            const recent = document.getElementById("recent-orders");
+
+            try {
+                const orders = await fetchArray("/api/orders");
+                count.textContent = orders.length;
+
+                const sales = orders.reduce((sum, order) =>
+                    sum + Number(order.totalAmount ?? order.total_amount ?? 0), 0
+                );
+
+                totalSales.textContent = money(sales);
+
+                const latest = [...orders].sort((a, b) =>
+                    Number(b.id ?? 0) - Number(a.id ?? 0)
+                ).slice(0, 5);
+
+                if (!latest.length) {
+                    recent.innerHTML =
+                        '<tr><td colspan="4">No orders found.</td></tr>';
+                    return orders;
+                }
+
+                recent.innerHTML = latest.map(order => `
+                    <tr>
+                        <td>#${safe(order.id)}</td>
+                        <td>${safe(order.customerName ?? order.customer_name ?? "Customer")}</td>
+                        <td>₹${money(order.totalAmount ?? order.total_amount)}</td>
+                        <td><span class="status">${safe(order.orderStatus ?? order.order_status ?? "Pending")}</span></td>
+                    </tr>
+                `).join("");
+
+                return orders;
+            } catch (error) {
+                console.error("Could not load orders:", error);
+                count.textContent = "Unavailable";
+                totalSales.textContent = "—";
+                recent.innerHTML =
+                    '<tr><td colspan="4">Could not load orders. Check the browser console and API endpoint.</td></tr>';
+                return null;
+            }
+        }
+
+        async function loadUsers() {
+            const count = document.getElementById("total-users");
+
+            try {
+                const users = await fetchArray("/api/admin/users");
+                count.textContent = users.length;
+            } catch (error) {
+                console.error("Could not load users:", error);
+                count.textContent = "Unavailable";
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            await Promise.all([
+                loadProducts(),
+                loadOrders(),
+                loadUsers()
+            ]);
+        });
+    </script>
+</body>
+</html>

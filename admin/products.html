@@ -1,0 +1,671 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Products | Frost Haven</title>
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            background: #fffaf5;
+            color: #3b2430;
+            font-family: Arial, sans-serif;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 20px 5%;
+            background: white;
+            border-bottom: 1px solid #f2dce3;
+        }
+
+        .admin-header h2 { margin: 0; color: #ad1457; }
+
+        .admin-header nav {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .admin-header nav a {
+            color: #492c3a;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .admin-page {
+            width: min(1200px, 92%);
+            margin: 32px auto;
+        }
+
+        .page-heading h1 { margin-bottom: 8px; }
+        .page-heading p { color: #806c76; }
+
+        .admin-form-section, .admin-section {
+            margin: 28px 0;
+            padding: 24px;
+            background: white;
+            border: 1px solid #f2dce3;
+            border-radius: 16px;
+            box-shadow: 0 5px 18px #492c3a0b;
+        }
+
+        .section-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .section-heading h2 { margin: 0; }
+
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label { font-weight: 600; }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #e8ccd7;
+            border-radius: 8px;
+            background: white;
+            color: #3b2430;
+            font: inherit;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: 2px solid #e7a0bc;
+            border-color: #ad1457;
+        }
+
+        .image-preview {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border: 1px solid #f2dce3;
+            border-radius: 12px;
+            background: #fff0f5;
+        }
+
+        .help-text {
+            color: #806c76;
+            font-size: 13px;
+        }
+
+        .admin-form-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .primary-button, .secondary-button, .action-button {
+            padding: 11px 18px;
+            border: 0;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .primary-button {
+            background: #ad1457;
+            color: white;
+        }
+
+        .secondary-button {
+            background: #fff0f5;
+            color: #ad1457;
+            border: 1px solid #f2dce3;
+        }
+
+        .action-button {
+            padding: 8px 11px;
+            margin: 2px;
+        }
+
+        .edit-button { background: #fff0d6; color: #805500; }
+        .delete-button { background: #fde8e8; color: #a51d2d; }
+
+        button:disabled { opacity: .6; cursor: wait; }
+
+        #product-message {
+            margin: 0;
+            overflow-wrap: anywhere;
+            color: #806c76;
+        }
+
+        .admin-table-container { overflow-x: auto; }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 760px;
+        }
+
+        .admin-table th, .admin-table td {
+            padding: 14px 12px;
+            text-align: left;
+            border-bottom: 1px solid #f3e6eb;
+        }
+
+        .admin-table th {
+            background: #fff3f7;
+            color: #6b344d;
+        }
+
+        .product-thumb {
+            width: 58px;
+            height: 58px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: #fff0f5;
+        }
+
+        .empty-message {
+            padding: 24px;
+            text-align: center;
+            color: #806c76;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding: 22px;
+            background: #381523;
+            color: white;
+            text-align: center;
+        }
+
+        @media (max-width: 650px) {
+            .form-row { grid-template-columns: 1fr; }
+            .admin-form-section, .admin-section { padding: 16px; }
+            .admin-header { padding: 18px 4%; }
+        }
+    </style>
+</head>
+
+<body>
+<header class="admin-header">
+    <h2>🍦 Frost Haven Admin</h2>
+    <nav>
+        <a href="dashboard.html">Dashboard</a>
+        <a href="products.html">Products</a>
+        <a href="orders.html">Orders</a>
+        <a href="users.html">Users</a>
+        <a href="categories.html">Categories</a>
+        <a href="login.html">Logout</a>
+    </nav>
+</header>
+
+<main class="admin-page">
+    <div class="page-heading">
+        <h1>Manage Products</h1>
+        <p>Add, update and manage Frost Haven ice creams.</p>
+    </div>
+
+    <section class="admin-form-section">
+        <div class="section-heading">
+            <h2 id="form-title">Add New Product</h2>
+        </div>
+
+        <form id="product-form" class="admin-form">
+            <input type="hidden" id="product-id">
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="product-name">Product Name</label>
+                    <input id="product-name" type="text"
+                           placeholder="Enter product name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-category">Category</label>
+                    <select id="product-category" required>
+                        <option value="">Select Category</option>
+                        <option value="Strawberry">Strawberry</option>
+                        <option value="Mango">Mango</option>
+                        <option value="Black Currant">Black Currant</option>
+                        <option value="Chocolate">Chocolate</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="product-price">Price (₹)</label>
+                    <input id="product-price" type="number"
+                           min="0.01" step="0.01" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="product-stock">Stock</label>
+                    <input id="product-stock" type="number"
+                           min="0" step="1" required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="product-image-file">Product Image</label>
+                <input id="product-image-file" type="file"
+                       accept="image/jpeg,image/png,image/webp">
+
+                <span class="help-text">
+                    JPG, PNG, or WebP. Maximum size: 5 MB.
+                    Select an image to preview it before saving.
+                </span>
+
+                <img id="product-image-preview"
+                     class="image-preview"
+                     alt="Product image preview"
+                     hidden>
+
+                <input type="hidden" id="product-image">
+            </div>
+
+            <div class="form-group">
+                <label for="product-description">Description</label>
+                <textarea id="product-description" rows="4"
+                          placeholder="Enter product description"></textarea>
+            </div>
+
+            <div class="admin-form-actions">
+                <button type="submit" id="save-product" class="primary-button">
+                    Add Product
+                </button>
+
+                <button type="button" id="cancel-edit"
+                        class="secondary-button" hidden>
+                    Cancel Edit
+                </button>
+            </div>
+
+            <p id="product-message" role="status" aria-live="polite"></p>
+        </form>
+    </section>
+
+    <section class="admin-section">
+        <div class="section-heading">
+            <h2>All Products</h2>
+            <span id="admin-product-count">Loading...</span>
+        </div>
+
+        <div class="admin-table-container">
+            <table class="admin-table">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Product</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+
+                <tbody id="admin-product-list">
+                <tr><td colspan="7">Loading products...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <p>© 2026 Frost Haven. All rights reserved.</p>
+    <p>Admin Panel</p>
+</footer>
+
+<script>
+"use strict";
+
+const form = document.getElementById("product-form");
+const list = document.getElementById("admin-product-list");
+const count = document.getElementById("admin-product-count");
+const message = document.getElementById("product-message");
+const saveButton = document.getElementById("save-product");
+const cancelButton = document.getElementById("cancel-edit");
+const fileInput = document.getElementById("product-image-file");
+const preview = document.getElementById("product-image-preview");
+const imageField = document.getElementById("product-image");
+
+let products = [];
+let previewURL = null;
+
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;",
+        '"': "&quot;", "'": "&#39;"
+    })[char]);
+}
+
+function imageURL(image) {
+    if (!image) return "";
+    const value = String(image).trim();
+    if (/^https?:\/\//i.test(value)) return value;
+    return "/images/" + value.replace(/^\/+/, "");
+}
+
+function showMessage(text) {
+    message.textContent = text;
+}
+
+async function responseError(response) {
+    const text = await response.text();
+    if (!text) return "HTTP " + response.status;
+
+    try {
+        const data = JSON.parse(text);
+        return data.message || data.error || text;
+    } catch {
+        return text;
+    }
+}
+
+function showPreview(src) {
+    if (previewURL && previewURL.startsWith("blob:")) {
+        URL.revokeObjectURL(previewURL);
+    }
+
+    previewURL = src || null;
+
+    if (src) {
+        preview.src = src;
+        preview.hidden = false;
+    } else {
+        preview.removeAttribute("src");
+        preview.hidden = true;
+    }
+}
+
+fileInput.addEventListener("change", () => {
+    const file = fileInput.files[0];
+
+    if (!file) {
+        const existingImage = imageField.value;
+        showPreview(existingImage ? imageURL(existingImage) : null);
+        return;
+    }
+
+    const allowedTypes = [
+        "image/jpeg",
+        "image/png",
+        "image/webp"
+    ];
+
+    if (!allowedTypes.includes(file.type)) {
+        fileInput.value = "";
+        showMessage("Choose a JPG, PNG, or WebP image.");
+        return;
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+        fileInput.value = "";
+        showMessage("Image must be smaller than 5 MB.");
+        return;
+    }
+
+    showMessage("");
+    showPreview(URL.createObjectURL(file));
+});
+
+async function loadProducts() {
+    count.textContent = "Loading...";
+    list.innerHTML = '<tr><td colspan="7">Loading products...</td></tr>';
+
+    try {
+        const response = await fetch("/api/products");
+
+        if (!response.ok) {
+            throw new Error(await responseError(response));
+        }
+
+        const data = await response.json();
+
+        products = Array.isArray(data) ? data :
+            (Array.isArray(data.content) ? data.content : []);
+
+        count.textContent = products.length + " Products";
+
+        if (!products.length) {
+            list.innerHTML =
+                '<tr><td colspan="7" class="empty-message">No products found.</td></tr>';
+            return;
+        }
+
+        list.innerHTML = products.map(product => {
+            const src = imageURL(product.image);
+
+            return `
+                <tr>
+                    <td>${escapeHTML(product.id)}</td>
+                    <td>
+                        ${src
+                            ? `<img class="product-thumb"
+                                    src="${escapeHTML(src)}"
+                                    alt="${escapeHTML(product.productName)}"
+                                    onerror="this.style.visibility='hidden'">`
+                            : "No image"}
+                    </td>
+                    <td>${escapeHTML(product.productName)}</td>
+                    <td>${escapeHTML(product.category)}</td>
+                    <td>₹${Number(product.price || 0).toFixed(2)}</td>
+                    <td>${Number(product.stock || 0)}</td>
+                    <td>
+                        <button type="button"
+                                class="action-button edit-button"
+                                data-edit="${Number(product.id)}">Edit</button>
+                        <button type="button"
+                                class="action-button delete-button"
+                                data-delete="${Number(product.id)}">Delete</button>
+                    </td>
+                </tr>`;
+        }).join("");
+
+    } catch (error) {
+        console.error("Product loading error:", error);
+        count.textContent = "Unable to load";
+        list.innerHTML =
+            `<tr><td colspan="7" class="empty-message">${escapeHTML(error.message)}</td></tr>`;
+    }
+}
+
+function resetForm() {
+    form.reset();
+    document.getElementById("product-id").value = "";
+    imageField.value = "";
+    showPreview(null);
+    document.getElementById("form-title").textContent = "Add New Product";
+    saveButton.textContent = "Add Product";
+    cancelButton.hidden = true;
+}
+
+function editProduct(id) {
+    const product = products.find(p => Number(p.id) === Number(id));
+    if (!product) {
+        showMessage("Product not found. Refresh and try again.");
+        return;
+    }
+
+    document.getElementById("product-id").value = product.id;
+    document.getElementById("product-name").value = product.productName || "";
+    document.getElementById("product-category").value = product.category || "";
+    document.getElementById("product-price").value = product.price ?? "";
+    document.getElementById("product-stock").value = product.stock ?? 0;
+    document.getElementById("product-description").value = product.description || "";
+    imageField.value = product.image || "";
+    fileInput.value = "";
+
+    document.getElementById("form-title").textContent = "Edit Product #" + id;
+    saveButton.textContent = "Save Changes";
+    cancelButton.hidden = false;
+
+    showPreview(product.image ? imageURL(product.image) : null);
+    showMessage("Editing product #" + id + ". Choose a new image only if you want to replace it.");
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+async function uploadSelectedImage() {
+    const file = fileInput.files[0];
+
+    // No new image selected: retain the existing filename during edit.
+    if (!file) return imageField.value;
+
+    const data = new FormData();
+    data.append("image", file);
+
+    const response = await fetch("/api/products/upload-image", {
+        method: "POST",
+        body: data
+    });
+
+    if (!response.ok) {
+        throw new Error(await responseError(response));
+    }
+
+    const result = await response.json();
+
+    if (!result.image) {
+        throw new Error("Upload response did not contain an image filename.");
+    }
+
+    return result.image;
+}
+
+form.addEventListener("submit", async event => {
+    event.preventDefault();
+
+    const id = document.getElementById("product-id").value;
+
+    const product = {
+        productName: document.getElementById("product-name").value.trim(),
+        category: document.getElementById("product-category").value,
+        price: Number(document.getElementById("product-price").value),
+        stock: Number(document.getElementById("product-stock").value),
+        description: document.getElementById("product-description").value.trim()
+    };
+
+    if (!product.productName || !product.category ||
+        !Number.isFinite(product.price) || product.price <= 0 ||
+        !Number.isInteger(product.stock) || product.stock < 0) {
+        showMessage("Enter a valid product name, category, price, and stock.");
+        return;
+    }
+
+    saveButton.disabled = true;
+    cancelButton.disabled = true;
+
+    try {
+        showMessage(fileInput.files.length
+            ? "Uploading image..."
+            : "Saving product...");
+
+        product.image = await uploadSelectedImage();
+
+        showMessage("Saving product details...");
+
+        const response = await fetch(
+            id ? "/api/products/" + encodeURIComponent(id) : "/api/products",
+            {
+                method: id ? "PUT" : "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(product)
+            }
+        );
+
+        if (!response.ok) {
+            throw new Error(await responseError(response));
+        }
+
+        showMessage(id
+            ? "Product updated successfully."
+            : "Product added successfully.");
+
+        resetForm();
+        await loadProducts();
+
+    } catch (error) {
+        console.error("Product save error:", error);
+        showMessage("Could not save product: " + error.message);
+    } finally {
+        saveButton.disabled = false;
+        cancelButton.disabled = false;
+    }
+});
+
+list.addEventListener("click", async event => {
+    const editButton = event.target.closest("[data-edit]");
+    const deleteButton = event.target.closest("[data-delete]");
+
+    if (editButton) {
+        editProduct(editButton.dataset.edit);
+        return;
+    }
+
+    if (deleteButton) {
+        const id = Number(deleteButton.dataset.delete);
+        const product = products.find(p => Number(p.id) === id);
+        if (!product) return;
+
+        if (!confirm(`Delete "${product.productName}"? This cannot be undone.`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch("/api/products/" + id, {
+                method: "DELETE"
+            });
+
+            if (!response.ok) {
+                throw new Error(await responseError(response));
+            }
+
+            showMessage("Product deleted successfully.");
+            await loadProducts();
+
+        } catch (error) {
+            console.error("Product deletion error:", error);
+            showMessage("Could not delete product: " + error.message);
+        }
+    }
+});
+
+cancelButton.addEventListener("click", () => {
+    resetForm();
+    showMessage("");
+});
+
+document.addEventListener("DOMContentLoaded", loadProducts);
+</script>
+</body>
+</html>

@@ -1,0 +1,279 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | Frost Haven</title>
+
+    <link rel="stylesheet" href="/style.css">
+
+    <style>
+        .login-hero {
+            min-height: 75vh;
+            padding: 45px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #fff0f5, #fffaf4);
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 440px;
+            padding: 38px;
+            background: #fff;
+            border: 1px solid #f0d5e1;
+            border-radius: 22px;
+            box-shadow: 0 12px 35px rgba(80, 30, 50, 0.10);
+        }
+
+        .login-icon {
+            width: 76px;
+            height: 76px;
+            margin: 0 auto 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff0f5;
+            border-radius: 50%;
+            font-size: 36px;
+        }
+
+        .login-card h1 {
+            margin: 0 0 10px;
+            text-align: center;
+            color: #a3154b;
+            font-size: 30px;
+        }
+
+        .login-subtitle {
+            margin: 0 0 28px;
+            text-align: center;
+            color: #806d77;
+            line-height: 1.7;
+        }
+
+        .login-card form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .login-card form > label {
+            margin-top: 8px;
+            color: #38222d;
+            font-weight: 600;
+        }
+
+        .login-card input[type="email"],
+        .login-card input[type="password"] {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 13px 14px;
+            border: 1px solid #e7ccd8;
+            border-radius: 10px;
+            background: #fffafc;
+            color: #38222d;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+
+        .login-card input[type="email"]:focus,
+        .login-card input[type="password"]:focus {
+            border-color: #a3154b;
+            box-shadow: 0 0 0 3px rgba(163, 21, 75, 0.10);
+        }
+
+        .remember-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0 15px;
+            font-size: 13px;
+        }
+
+        .remember-row label {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            color: #806d77;
+            cursor: pointer;
+        }
+
+        .remember-row a,
+        .login-register a {
+            color: #a3154b;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .remember-row a:hover,
+        .login-register a:hover {
+            text-decoration: underline;
+        }
+
+        .login-submit {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 30px;
+            background: #a3154b;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.2s;
+        }
+
+        .login-submit:hover {
+            background: #80103a;
+            transform: translateY(-1px);
+        }
+
+        #login-message {
+            margin: 14px 0 0;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .login-register {
+            margin: 24px 0 0;
+            padding-top: 20px;
+            border-top: 1px solid #f0d5e1;
+            text-align: center;
+            color: #806d77;
+            font-size: 14px;
+        }
+
+        .login-footer {
+            padding: 22px 15px;
+            text-align: center;
+            background: #fffaf4;
+            border-top: 1px solid #f0d5e1;
+            color: #806d77;
+            line-height: 1.8;
+        }
+
+        .login-footer p {
+            margin: 4px 0;
+        }
+
+        @media (max-width: 480px) {
+            .login-hero {
+                padding: 30px 15px;
+            }
+
+            .login-card {
+                padding: 28px 22px;
+            }
+
+            .login-card h1 {
+                font-size: 26px;
+            }
+
+            .remember-row {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="site-header">
+        <div class="nav-container">
+            <a href="/" class="brand" style="text-decoration: none;">
+                🍦 Frost Haven
+            </a>
+
+            <nav>
+                <a href="/">Home</a>
+                <a href="/pages/products.html">Ice Creams</a>
+                <a href="/pages/about.html">About</a>
+                <a href="/pages/login.html" class="active">Login</a>
+                <a href="/pages/register.html">Register</a>
+                <a href="/pages/cart.html">🛒 Cart</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="login-hero">
+        <section class="login-card">
+
+            <div class="login-icon">🔐</div>
+
+            <h1>Welcome Back!</h1>
+
+            <p class="login-subtitle">
+                Sign in to your Frost Haven account and enjoy your
+                favorite ice creams.
+            </p>
+
+            <form id="login-form">
+
+                <label for="login-email">Email Address</label>
+                <input
+                    type="email"
+                    id="login-email"
+                    name="email"
+                    placeholder="Enter your email"
+                    autocomplete="email"
+                    required
+                >
+
+                <label for="login-password">Password</label>
+                <input
+                    type="password"
+                    id="login-password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <div class="remember-row">
+                    <label>
+                        <input type="checkbox" id="remember-me">
+                        Remember me
+                    </label>
+
+                    <a href="#" id="forgot-password">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="login-submit">
+                    Login to Your Account
+                </button>
+
+            </form>
+
+            <p id="login-message" role="status" aria-live="polite"></p>
+
+            <p class="login-register">
+                Don't have an account?
+                <a href="/pages/register.html">Create an account</a>
+            </p>
+
+        </section>
+    </main>
+
+    <footer class="login-footer">
+        <p>© 2026 Frost Haven. All rights reserved.</p>
+        <p>Made with ❤️ for ice cream lovers.</p>
+    </footer>
+
+    <script src="/script.js"></script>
+
+    <script>
+        document.getElementById("forgot-password").addEventListener("click", function (event) {
+            event.preventDefault();
+            alert("Password reset is not configured yet. Please contact the store administrator for help.");
+        });
+    </script>
+
+</body>
+</html>

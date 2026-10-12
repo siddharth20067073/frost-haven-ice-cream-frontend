@@ -1,0 +1,674 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Users | Frost Haven</title>
+
+    <link rel="stylesheet" href="../style.css">
+
+    <style>
+        :root {
+            --cream: #fff9f3;
+            --white: #ffffff;
+            --chocolate: #4b2924;
+            --muted: #8b7771;
+            --berry: #b52d60;
+            --berry-light: #fff0f5;
+            --border: #f3dce3;
+            --shadow: 0 8px 25px rgba(75, 41, 36, 0.05);
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--cream);
+            color: var(--chocolate);
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .admin-navbar {
+            min-height: 90px;
+            padding: 20px 4.5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 24px;
+            flex-wrap: wrap;
+            background: var(--white);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .admin-brand {
+            margin: 0;
+            color: var(--berry);
+            font-size: 28px;
+            font-weight: 800;
+        }
+
+        .admin-nav-links {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .admin-nav-links a {
+            color: var(--chocolate);
+            font-size: 15px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .admin-nav-links a:hover,
+        .admin-nav-links a.active {
+            color: var(--berry);
+        }
+
+        .page-container {
+            width: min(1240px, 92%);
+            margin: 38px auto 60px;
+        }
+
+        .page-heading {
+            margin-bottom: 30px;
+        }
+
+        .page-heading h1 {
+            margin: 0 0 12px;
+            font-size: 34px;
+            color: #34221f;
+        }
+
+        .page-heading p {
+            margin: 0;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .search-card,
+        .users-card,
+        .details-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .search-card {
+            padding: 26px;
+            margin-bottom: 26px;
+        }
+
+        .search-label {
+            display: block;
+            margin-bottom: 12px;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .search-input {
+            width: 100%;
+            min-height: 52px;
+            padding: 14px;
+            color: var(--chocolate);
+            background: #fffdfc;
+            border: 1px solid #edcfd9;
+            border-radius: 11px;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .search-input:focus {
+            border-color: var(--berry);
+            box-shadow: 0 0 0 3px rgba(181, 45, 96, 0.09);
+        }
+
+        .users-card {
+            padding: 26px;
+            overflow: hidden;
+        }
+
+        .section-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+
+        .section-heading h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .count-badge {
+            display: inline-block;
+            padding: 11px 17px;
+            background: var(--berry-light);
+            color: var(--berry);
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        .users-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .users-table thead {
+            background: var(--berry-light);
+        }
+
+        .users-table th {
+            padding: 19px 14px;
+            color: #71314b;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .users-table td {
+            padding: 19px 14px;
+            border-bottom: 1px solid #f4e5e9;
+            font-size: 15px;
+        }
+
+        .users-table tbody tr:hover {
+            background: #fffafc;
+        }
+
+        .users-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .user-avatar {
+            width: 38px;
+            height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            border-radius: 50%;
+            background: var(--berry-light);
+            color: var(--berry);
+            font-weight: 800;
+            vertical-align: middle;
+        }
+
+        .user-name {
+            font-weight: 700;
+        }
+
+        .user-email {
+            color: #78655f;
+        }
+
+        .view-button,
+        .close-button {
+            padding: 11px 15px;
+            border: 1px solid #f1cad8;
+            border-radius: 10px;
+            background: var(--berry-light);
+            color: var(--berry);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .view-button:hover,
+        .close-button:hover {
+            background: var(--berry);
+            color: var(--white);
+        }
+
+        .message-row {
+            padding: 30px !important;
+            color: var(--muted);
+            text-align: center;
+        }
+
+        .details-card {
+            margin-top: 26px;
+            padding: 26px;
+        }
+
+        .details-card[hidden] {
+            display: none !important;
+        }
+
+        .details-heading {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .details-heading h2 {
+            margin: 0;
+            font-size: 22px;
+        }
+
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .detail-item {
+            padding: 17px;
+            background: #fffafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow-wrap: anywhere;
+        }
+
+        .detail-label {
+            display: block;
+            margin-bottom: 8px;
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .detail-value {
+            color: var(--chocolate);
+            font-size: 15px;
+            line-height: 1.6;
+        }
+
+        .admin-footer {
+            padding: 25px 15px;
+            color: var(--muted);
+            text-align: center;
+            font-size: 13px;
+        }
+
+        @media (max-width: 850px) {
+            .admin-navbar {
+                align-items: flex-start;
+            }
+
+            .admin-nav-links {
+                gap: 17px;
+            }
+
+            .page-heading h1 {
+                font-size: 29px;
+            }
+
+            .users-card,
+            .search-card,
+            .details-card {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 560px) {
+            .admin-navbar {
+                padding: 20px;
+            }
+
+            .admin-brand {
+                font-size: 24px;
+            }
+
+            .admin-nav-links {
+                gap: 14px;
+            }
+
+            .admin-nav-links a {
+                font-size: 13px;
+            }
+
+            .page-container {
+                width: 94%;
+                margin-top: 26px;
+            }
+
+            .page-heading h1 {
+                font-size: 26px;
+            }
+
+            .details-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-heading h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="admin-navbar">
+        <h2 class="admin-brand">🍦 Frost Haven Admin</h2>
+
+        <nav class="admin-nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="products.html">Products</a>
+            <a href="orders.html">Orders</a>
+            <a href="users.html" class="active">Users</a>
+            <a href="categories.html">Categories</a>
+            <a href="../index.html">Logout</a>
+        </nav>
+    </header>
+
+    <main class="page-container">
+
+        <section class="page-heading">
+            <h1>Manage Users</h1>
+            <p>View and manage customer information for Frost Haven.</p>
+        </section>
+
+        <section class="search-card">
+            <label class="search-label" for="user-search">
+                Search Customers
+            </label>
+
+            <input
+                type="search"
+                id="user-search"
+                class="search-input"
+                placeholder="Search by customer name or email..."
+                autocomplete="off"
+            >
+        </section>
+
+        <section class="users-card">
+            <div class="section-heading">
+                <h2>Registered Customers</h2>
+                <span class="count-badge" id="admin-user-count">
+                    Loading users...
+                </span>
+            </div>
+
+            <div class="table-wrapper">
+                <table class="users-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Customer</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="admin-user-list">
+                        <tr>
+                            <td colspan="5" class="message-row">
+                                Loading customers...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section
+            class="details-card"
+            id="user-details-section"
+            hidden
+        >
+            <div class="details-heading">
+                <h2>Customer Details</h2>
+
+                <button
+                    type="button"
+                    class="close-button"
+                    id="close-user-details"
+                >
+                    Close Details ✕
+                </button>
+            </div>
+
+            <div class="details-grid" id="user-details"></div>
+        </section>
+
+    </main>
+
+    <footer class="admin-footer">
+        © 2026 Frost Haven. Made with 🍦 and love.
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userSearch = document.getElementById("user-search");
+            const userCount = document.getElementById("admin-user-count");
+            const userList = document.getElementById("admin-user-list");
+            const detailsSection = document.getElementById("user-details-section");
+            const detailsContainer = document.getElementById("user-details");
+            const closeDetailsButton = document.getElementById("close-user-details");
+
+            let allUsers = [];
+
+            function safeText(value) {
+                return value === null || value === undefined || value === ""
+                    ? "Not provided"
+                    : String(value);
+            }
+
+            function createCell(value) {
+                const cell = document.createElement("td");
+                cell.textContent = safeText(value);
+                return cell;
+            }
+
+            function showTableMessage(message) {
+                userList.replaceChildren();
+
+                const row = document.createElement("tr");
+                const cell = document.createElement("td");
+
+                cell.colSpan = 5;
+                cell.className = "message-row";
+                cell.textContent = message;
+
+                row.appendChild(cell);
+                userList.appendChild(row);
+            }
+
+            function renderUsers() {
+                const searchTerm = userSearch.value.trim().toLowerCase();
+
+                const filteredUsers = allUsers.filter(user => {
+                    const name = String(user.name || "").toLowerCase();
+                    const email = String(user.email || "").toLowerCase();
+                    const id = String(user.id ?? "").toLowerCase();
+
+                    return (
+                        name.includes(searchTerm) ||
+                        email.includes(searchTerm) ||
+                        id.includes(searchTerm)
+                    );
+                });
+
+                userCount.textContent =
+                    `${filteredUsers.length} of ${allUsers.length} Users`;
+
+                userList.replaceChildren();
+
+                if (filteredUsers.length === 0) {
+                    showTableMessage(
+                        allUsers.length
+                            ? "No customers match your search."
+                            : "No registered customers found."
+                    );
+                    return;
+                }
+
+                filteredUsers.forEach(user => {
+                    const row = document.createElement("tr");
+
+                    row.appendChild(createCell(user.id));
+
+                    const nameCell = document.createElement("td");
+
+                    const avatar = document.createElement("span");
+                    avatar.className = "user-avatar";
+                    avatar.textContent = String(user.name || "U")
+                        .trim()
+                        .charAt(0)
+                        .toUpperCase();
+
+                    const name = document.createElement("span");
+                    name.className = "user-name";
+                    name.textContent = safeText(user.name);
+
+                    nameCell.appendChild(avatar);
+                    nameCell.appendChild(name);
+
+                    row.appendChild(nameCell);
+
+                    const emailCell = createCell(user.email);
+                    emailCell.className = "user-email";
+                    row.appendChild(emailCell);
+
+                    row.appendChild(createCell(user.phone));
+
+                    const actionCell = document.createElement("td");
+                    const viewButton = document.createElement("button");
+
+                    viewButton.type = "button";
+                    viewButton.className = "view-button";
+                    viewButton.textContent = "View Details";
+
+                    viewButton.addEventListener("click", () => {
+                        displayUserDetails(user);
+                    });
+
+                    actionCell.appendChild(viewButton);
+                    row.appendChild(actionCell);
+
+                    userList.appendChild(row);
+                });
+            }
+
+            function displayUserDetails(user) {
+                detailsContainer.replaceChildren();
+
+                const fields = [
+                    ["Customer ID", user.id],
+                    ["Full Name", user.name],
+                    ["Email Address", user.email],
+                    ["Phone Number", user.phone],
+                    ["Address", user.address],
+                    ["Registered On", user.createdAt
+                        ? formatDate(user.createdAt)
+                        : null]
+                ];
+
+                fields.forEach(([label, value]) => {
+                    const item = document.createElement("div");
+                    item.className = "detail-item";
+
+                    const labelElement = document.createElement("span");
+                    labelElement.className = "detail-label";
+                    labelElement.textContent = label;
+
+                    const valueElement = document.createElement("div");
+                    valueElement.className = "detail-value";
+                    valueElement.textContent = safeText(value);
+
+                    item.appendChild(labelElement);
+                    item.appendChild(valueElement);
+
+                    detailsContainer.appendChild(item);
+                });
+
+                detailsSection.hidden = false;
+
+                detailsSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+
+            function formatDate(value) {
+                const date = new Date(value);
+
+                return Number.isNaN(date.getTime())
+                    ? String(value)
+                    : date.toLocaleString("en-IN");
+            }
+
+            async function loadUsers() {
+                userCount.textContent = "Loading users...";
+                showTableMessage("Loading customers...");
+
+                try {
+                    const response = await fetch("/api/admin/users", {
+                        method: "GET",
+                        headers: {
+                            "Accept": "application/json"
+                        },
+                        cache: "no-store"
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(
+                            `Unable to load users (HTTP ${response.status}).`
+                        );
+                    }
+
+                    const data = await response.json();
+
+                    if (Array.isArray(data)) {
+                        allUsers = data;
+                    } else if (Array.isArray(data.content)) {
+                        allUsers = data.content;
+                    } else if (Array.isArray(data.users)) {
+                        allUsers = data.users;
+                    } else if (Array.isArray(data.data)) {
+                        allUsers = data.data;
+                    } else {
+                        throw new Error("The server returned an invalid user list.");
+                    }
+
+                    renderUsers();
+
+                } catch (error) {
+                    console.error("Error loading users:", error);
+
+                    userCount.textContent = "Unavailable";
+
+                    showTableMessage(
+                        error.message || "Unable to load customers. Please refresh."
+                    );
+                }
+            }
+
+            userSearch.addEventListener("input", renderUsers);
+
+            closeDetailsButton.addEventListener("click", () => {
+                detailsSection.hidden = true;
+            });
+
+            loadUsers();
+        });
+    </script>
+
+</body>
+</html>
